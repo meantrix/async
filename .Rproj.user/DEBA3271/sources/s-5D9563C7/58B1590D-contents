@@ -1,0 +1,11 @@
+Package: async
+Type: Package
+Title: Async
+Version: 0.1.0
+Author: Igor D.S. Siciliani
+Maintainer: Igor D.S. Siciliani <igorschoeller@gmail.com>
+Description: A simple tools for passing messages between some R processes like shiny
+reactives and futures routines.
+License: 
+Encoding: UTF-8
+LazyData: true
