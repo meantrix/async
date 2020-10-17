@@ -2,10 +2,19 @@ Package: async
 Type: Package
 Title: Async
 Version: 0.1.0
-Author: Meantrix Team
+Authors@R: 
+    c(person(
+      given = "Igor",
+      family = "Siciliani",
+      role = c("aut", "cre"),
+      email = "igor@meantrix.com")
+    )
 Maintainer: Meantrix <dev@meantrix.com>
-Description: A simple tools for passing messages between some R processes like shiny
-reactives and futures routines.
-License: 
+Description: A simple tools for passing messages between some R processes like shiny reactives and futures routines.
+Depends:
+    R (>= 3.5.0),
+    shiny (>= 1.5.0),
+    R6 (>= 2.4.1),
+License: MIT License 
 Encoding: UTF-8
 LazyData: true

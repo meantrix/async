@@ -6,7 +6,7 @@
 #'you can programatically cause the trigger.
 #'This concept and code was created by Joe Cheng (author of shiny).
 
-reactiveTrigger <- function() {
+reactiveTrigger = function() {
   async = shiny::reactiveVal(0)
   list(
     depend = function() {

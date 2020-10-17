@@ -20,7 +20,8 @@ async = R6::R6Class(classname = 'async',
                       .reactive =TRUE,
 
                       get_status = function(){
-                        vm = scan(private$vars$status_file, what = "character",
+                        vm = scan(private$vars$status_file,
+                                  what = "character",
                                   sep="\n",quiet = TRUE)
                         vm = stringr::str_split(vm,' zzzz ')[[1]]
                         names(vm) = c('value','message')
@@ -198,7 +199,9 @@ async = R6::R6Class(classname = 'async',
                         do.call(private$get_status,args = list())
                         return(private$vars$vm)
                       },
-
+                      #' @description
+                      #' Check the status of the process in
+                      #' the future context
                       check = function(){
                         do.call(private$check_status,args = list())
                       }
