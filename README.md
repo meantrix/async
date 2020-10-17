@@ -35,7 +35,7 @@ library(shiny)
 library(future)
 plan(multiprocess)
 
-ui <- fluidPage(
+ui = fluidPage(
   titlePanel("Long Run Stoppable Async"),
   sidebarLayout(
     sidebarPanel(
@@ -48,12 +48,12 @@ ui <- fluidPage(
   )
 )
 
-server <- function(input, output) {
-  N <- 100
+server = function(input, output) {
+  N = 100
   asy = async$new(reactive = TRUE,auto.finish = FALSE)
 
 
-    result <- future({
+    result = future({
       print("Running...")
       for(i in 1:N){
 

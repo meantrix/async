@@ -67,7 +67,7 @@ async = R6::R6Class(classname = 'async',
                       },
 
                       interrupted = function(){
-                        private$get_status()[1] == "777"
+                        private$get_status()[1] == "7777"
                       },
 
 
@@ -187,7 +187,7 @@ async = R6::R6Class(classname = 'async',
                       #' the message to be displayed to the user.
                       interrupt = function(msg="process interrupted"){
 
-                        args = list(value = 777, msg = msg)
+                        args = list(value = 7777, msg = msg)
                         do.call(private$set_status, args = args)
 
                         if(isTRUE(private$.reactive)){
