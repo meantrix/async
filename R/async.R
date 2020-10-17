@@ -1,7 +1,10 @@
-#async progress class
-
-
-
+#' @title  R6 Class async
+#' @description
+#' simple tool to pass message of progress and interruption of routines
+#' between some R processes like shiny reactives and futures routines.
+#' @name async
+#' @export
+NULL
 
 async = R6::R6Class(classname = 'async',
 
@@ -58,7 +61,7 @@ async = R6::R6Class(classname = 'async',
                     ),
 
                     active = list(
-
+                      #' @field  status_file path to temporary file
                       status_file = function (value) {
                         if (missing(value)) {
                           private$vars$status_file
@@ -66,6 +69,7 @@ async = R6::R6Class(classname = 'async',
                           stop("`$status_file` is read only", call. = FALSE)
                         }
                       },
+                      #' @field  upper
                       upper = function (value) {
                         if (missing(value)) {
                           private$vars$upper
@@ -135,7 +139,7 @@ async = R6::R6Class(classname = 'async',
                       interrupt = function(msg="process interrupted"){
 
                         args = list(value = 777, msg = msg)
-                        do.call(private$set_status,args = args)
+                        do.call(private$set_status, args = args)
 
                         if(isTRUE(private$.reactive)){
                           private$rxTrigger$trigger()
