@@ -18,33 +18,32 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   N <- 100
-  asy = async$new(reactive = TRUE,auto.finish = FALSE)  
-  
-  
+  asy = async$new(reactive = TRUE,auto.finish = FALSE)
+
+
     result <- future({
       print("Running...")
       for(i in 1:N){
-        
+
         # Long Running Task
         Sys.sleep(1)
-        
+
         # Notify status file of progress
         asy$progress(100*i/N)
-        
-        #asy$check()
+
       }
-      
+
       #Some results
       quantile(rnorm(1000))
     })
 
-    
+
   # Register user interrupt
   observeEvent(input$cancel,{
     print("Cancel")
     asy$interrupt()
   })
-  
+
   # Let user get analysis progress
   observeEvent(input$status,{
     print("Status")
@@ -52,5 +51,5 @@ server <- function(input, output) {
   })
 }
 
-# Run the application 
+# Run the application
 shinyApp(ui = ui, server = server)
