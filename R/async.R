@@ -69,7 +69,7 @@ async = R6::R6Class(classname = 'async',
                           stop("`$status_file` is read only", call. = FALSE)
                         }
                       },
-                      #' @field  upper
+                      #'@field  upper The value that represents the end of the routine progress.
                       upper = function (value) {
                         if (missing(value)) {
                           private$vars$upper
@@ -77,6 +77,8 @@ async = R6::R6Class(classname = 'async',
                           stop("`$upper` is read only", call. = FALSE)
                         }
                       },
+                      #'@field lower The value that represents the starting
+                      #'point of the routine progress.
                       lower = function (value) {
                         if (missing(value)) {
                           private$vars$lower
@@ -84,6 +86,8 @@ async = R6::R6Class(classname = 'async',
                           stop("`$lower` is read only", call. = FALSE)
                         }
                       },
+                      #'@field auto.finish if it is true the routine will
+                      #'be interrupted when the progress is equal to the upper value.
                       auto.finish = function (value) {
                         if (missing(value)) {
                           private$vars$auto.finish
@@ -91,6 +95,7 @@ async = R6::R6Class(classname = 'async',
                           stop("`$auto.finish` is read only", call. = FALSE)
                         }
                       },
+                      #'@field value_message get job status.
                       value_message = function (value) {
                         if (missing(value)) {
                           private$vars$vm
@@ -98,6 +103,8 @@ async = R6::R6Class(classname = 'async',
                           stop("`$value_message` is read only", call. = FALSE)
                         }
                       },
+                      #'@field If its true generate a reactive expression
+                      #' is a expression whose result will change over time.
                       reactive = function (value) {
                         if (missing(value)) {
                           private$.reactive
@@ -111,7 +118,18 @@ async = R6::R6Class(classname = 'async',
 
                     public = list(
 
-
+                      #' @description
+                      #' create an interative environment
+                      #' to pass progress message between
+                      #' R processes.
+                      #' @param lower The value that represents the starting
+                      #'point of the routine progress.
+                      #' @param upper upper The value that represents
+                      #' the end of the routine progress.
+                      #' @param auto.finish auto.finish if it is true the routine will
+                      #'be interrupted when the progress is equal to the upper value.
+                      #' @param reactive If its true generate a reactive expression
+                      #' is a expression whose result will change over time.
                       initialize = function(lower=0, upper=100,
                                             auto.finish = TRUE,
                                             reactive=TRUE){
@@ -136,6 +154,10 @@ async = R6::R6Class(classname = 'async',
 
                       },
 
+                      #' @description
+                      #' Interrupt checking to future processes.
+                      #' @param msg A single-element character vector;
+                      #' the message to be displayed to the user.
                       interrupt = function(msg="process interrupted"){
 
                         args = list(value = 777, msg = msg)
@@ -145,7 +167,12 @@ async = R6::R6Class(classname = 'async',
                           private$rxTrigger$trigger()
                         }
                       },
-
+                      #' @description
+                      #' Set progress to future processes.
+                      #' @param value  the value at which to set the progress,
+                      #' relative to lower and upper.
+                      #' @param msg A single-element character vector;
+                      #' the message to be displayed to the user.
                       progress = function(value=0,msg="Running..."){
                         args = list(value = value, msg = msg)
                         checkmate::expect_numeric(value,lower = private$vars$lower,
@@ -159,7 +186,9 @@ async = R6::R6Class(classname = 'async',
                           private$rxTrigger$trigger()
                         }
                       },
-
+                      #' @description
+                      #' get the status of the process out
+                      #' of the future context
                       status = function(){
 
                         if(isTRUE(private$.reactive)){
