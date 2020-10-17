@@ -32,6 +32,7 @@ Communicate between the app and the inside of the future:
 
 ```
 library(shiny)
+library(async)
 library(future)
 plan(multiprocess)
 
