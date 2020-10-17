@@ -1,3 +1,29 @@
+#'@title reactiveTrigger
+#'@description A reactive trigger can be used when you want
+#'to be able to explicitly trigger a reactive expression.
+#'You can think of it as being similar to an action button,
+#'except instead of clicking on a button to trigger an expression,
+#'you can programatically cause the trigger.
+#'This concept and code was created by Joe Cheng (author of shiny).
+
+reactiveTrigger = function() {
+  async = shiny::reactiveVal(0)
+  list(
+    depend = function() {
+      async()
+      invisible()
+    },
+    trigger = function() {
+      async( shiny::isolate(async()) + 1)
+    }
+  )
+}
+
+
+
+
+
+
 #' @title  R6 Class async
 #' @description
 #' simple tool to pass message of progress and interruption of routines
@@ -16,7 +42,7 @@ async = R6::R6Class(classname = 'async',
                                   auto.finish = TRUE,
                                   vm = NULL
                       ),
-                      rxTrigger =  reactiveTrigger(),
+                      rx_trigger =  reactiveTrigger(),
                       .reactive =TRUE,
 
                       get_status = function(){
@@ -104,7 +130,7 @@ async = R6::R6Class(classname = 'async',
                           stop("`$value_message` is read only", call. = FALSE)
                         }
                       },
-                      #'@field If its true generate a reactive expression
+                      #'@field reactive If its true generate a reactive expression
                       #' is a expression whose result will change over time.
                       reactive = function (value) {
                         if (missing(value)) {
@@ -147,7 +173,7 @@ async = R6::R6Class(classname = 'async',
                         write(paste0(vm$value,' zzzz ',vm$msg), private$vars$status_file)
 
                         private$.reactive = reactive
-                        private$rxTrigger =  reactiveTrigger()
+                        private$rx_trigger =  reactiveTrigger()
 
                         private$vars$lower = lower
                         private$vars$upper = upper
@@ -165,7 +191,7 @@ async = R6::R6Class(classname = 'async',
                         do.call(private$set_status, args = args)
 
                         if(isTRUE(private$.reactive)){
-                          private$rxTrigger$trigger()
+                          private$rx_trigger$trigger()
                         }
                       },
                       #' @description
@@ -184,7 +210,7 @@ async = R6::R6Class(classname = 'async',
                         do.call(private$set_status,args = args)
 
                         if(isTRUE(private$.reactive)){
-                          private$rxTrigger$trigger()
+                          private$rx_trigger$trigger()
                         }
                       },
                       #' @description
@@ -193,7 +219,7 @@ async = R6::R6Class(classname = 'async',
                       status = function(){
 
                         if(isTRUE(private$.reactive)){
-                          private$rxTrigger$depend()
+                          private$rx_trigger$depend()
                         }
 
                         do.call(private$get_status,args = list())
