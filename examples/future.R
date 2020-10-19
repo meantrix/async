@@ -1,6 +1,7 @@
 library(shiny)
 library(promises)
 library(future)
+library(async)
 plan(multiprocess)
 
 ui <- fluidPage(
@@ -29,7 +30,7 @@ server <- function(input, output) {
         Sys.sleep(1)
 
         # Notify status file of progress
-        asy$progress(100*i/N)
+        asy$progress(100*i/N, msg = 'test progress')
 
       }
 

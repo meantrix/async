@@ -1,3 +1,5 @@
+library(shiny)
+library(async)
 ui <- fluidPage(
   actionButton("minus", "set 10"),
   actionButton("plus", "set 20"),
