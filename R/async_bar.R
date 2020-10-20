@@ -106,26 +106,45 @@ async = R6::R6Class(classname = 'async_bar',
 
       progress.close = function(id){
         return(paste0("$('#shiny-notification-" , id , "').remove(); "))
-      }
+      },
+
+      #' @description : Interrupt progress update in client side.
+      #' @title interrupt_client
+      #' @param session : shiny session.
+      interrupt_client = function(session){
+
+        jsCode = glue::glue("var {asyncheck} = false;",asyncheck = private$asyncheck)
+        shinyjs::runjs(jsCode)
+        private$progress.close(private$id)
+
+      },
+
+
   ),
 
   public = list(
 
-      initialize = function(async ,id,intervalMillis=400,detail,session){
+      initialize = function(async ,id,interval=400,detail,session){
 
         checkmate::expect_class(async,'R6')
         checkmate::expect_character(id,max.len = 1)
         checkmate::expect_character(detail,max.len = 1)
-        checkmate::expect_numeric(intervalMillis,lower = 0,upper = Inf)
+        checkmate::expect_numeric(interval,lower = 0,upper = Inf)
         if(missing(session)){
         session = shiny::getDefaultReactiveDomain()
         }
 
+      vars = do.call(paste0, Map(stringi::stri_rand_strings, n=1, length=c(5, 4, 1),
+                                          pattern = c('[A-Z]', '[0-9]', '[A-Z]')))
+
+      private$input = vars
+      private$id = id
+      private$interval = interval
+      private$asyncheck = 'true'
+
+    },
 
 
-
-
-    }
 
 
   )
