@@ -17,10 +17,12 @@ jsCode2 = glue("
 async$input = 'var2'
 
 
-async_bar = function(async,ID=uuid::UUIDgenerate()){
+async_bar = function(async,session){
 
   activate = async$input
-  shiny::observeEvent(input$var2,)
+  shiny::observeEvent(input[[active]],{
+
+  })
 
 
 }
