@@ -2,6 +2,7 @@ library(shiny)
 library(promises)
 library(future)
 library(async)
+library(shinyWidgets)
 plan(multiprocess)
 
 ui <- fluidPage(
@@ -9,7 +10,15 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       actionButton('cancel', 'Cancel'),
-      actionButton('status', 'Check Status')
+      actionButton('status', 'Check Status'),
+      progressBar(
+            id = "pb2",
+            value = 0,
+            total = 100,
+            title = "",
+            display_pct = TRUE
+          )
+
     ),
     mainPanel(
       tableOutput("result")
@@ -17,7 +26,7 @@ ui <- fluidPage(
   )
 )
 
-server <- function(input, output) {
+server <- function(input, output,session) {
   N <- 100
   asy = async$new(reactive = TRUE,auto.finish = FALSE)
 
@@ -45,11 +54,20 @@ server <- function(input, output) {
     asy$interrupt()
   })
 
-  # Let user get analysis progress
+  #Let user get analysis progress
   observeEvent(input$status,{
     print("Status")
     print(asy$status())
+    updateProgressBar(
+              session = session,
+              id = "pb2",
+              value = asy$status()[[1]], total = 100,
+              title = 'test progress bar'
+            )
   })
+
+
+
 }
 
 # Run the application
