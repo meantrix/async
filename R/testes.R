@@ -4,9 +4,9 @@ jsCode = glue("
   SetInterval(function({input},{asyncheck}){
      if({asyncheck} == true):
         Shiny.addCustomMessageHandler(input , function(){
-        Shiny.onInputChange(input,'_' + Math.random().toString(36).substr(2, 9));
-    }, {timer},{input});
-")
+        Shiny.onInputChange({input},'_' + Math.random().toString(36).substr(2, 9));
+    }), {timer},{input});
+",asyncheck,input)
 
 
 jsCode2 = glue("
