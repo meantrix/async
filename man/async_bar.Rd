@@ -10,7 +10,7 @@ Progress shiny bar to async class
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{async_bar$new()}}
-\item \href{#method-run}{\code{async_bar$run()}}
+\item \href{#method-progress}{\code{async_bar$progress()}}
 \item \href{#method-close}{\code{async_bar$close()}}
 \item \href{#method-clone}{\code{async_bar$clone()}}
 }
@@ -80,11 +80,11 @@ Progress shiny bar to async class
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-run"></a>}}
-\if{latex}{\out{\hypertarget{method-run}{}}}
-\subsection{Method \code{run()}}{
+\if{html}{\out{<a id="method-progress"></a>}}
+\if{latex}{\out{\hypertarget{method-progress}{}}}
+\subsection{Method \code{progress()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{async_bar$run(session)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{async_bar$progress(session, input)}\if{html}{\out{</div>}}
 }
 
 }
