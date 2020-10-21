@@ -41,7 +41,7 @@ server <- function(input, output,session) {
 
       if(i > 20){
 
-        asy1$interrupt('fechou...')
+        asy1$interrupt('close future...')
 
       }
 

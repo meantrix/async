@@ -15,6 +15,9 @@ async_bar = R6::R6Class(classname = 'async_bar',
                           fun.id = NULL,
                           detail = NULL,
                           interval = NULL,
+                          last.value = NULL,
+                          max.rep = NULL,
+                          rep = 0,
 
                           #' @description : Create new progress bar.
                           #' @title progress_new
@@ -139,7 +142,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
 
                             shinyjs::runjs(jsCode)
                             shinyjs::runjs(private$progress_new(id = private$id, detail = private$detail, message = private$msg))
-
+                            shinyjs::runjs(private$progress_showbar(id = private$id))
 
                           },
 
@@ -152,16 +155,26 @@ async_bar = R6::R6Class(classname = 'async_bar',
                               max.value = private$async$upper
                               min.value = private$async$lower
                               value = as.numeric(vars[1])
+
+                              if(value == private$las.value){
+
+                                private$rep = private$rep + 1
+
+                              }
+
+                              private$last.value = value
+
                               msg = as.character(vars[2])
+                              max.rep = private$max.rep
 
 
-                              if( isTRUE(value == 7777) | isTRUE(value == max.value) ) {
+                              if( isTRUE(value == 7777) | isTRUE(value == max.value) | rep > max.rep ) {
 
                                 private$interrupt_client(session)
 
                               } else {
 
-                                width = (max.value - value)/(max.value-min.value)
+                                width = (value - min.value)/(max.value-min.value)
 
                                 shinyjs::runjs(private$progress_set(id = private$id ,
                                                                     message = msg ,
@@ -183,6 +196,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                           initialize = function(async ,
                                                 id,
                                                 interval=400,
+                                                max.rep = 20,
                                                 detail='',
                                                 session){
 
@@ -190,6 +204,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                             checkmate::expect_character(id,max.len = 1)
                             checkmate::expect_character(detail,max.len = 1)
                             checkmate::expect_numeric(interval,lower = 0,upper = Inf)
+                            checkmate::expect_numeric(max.rep,lower = 1,upper = Inf)
 
                             if(missing(session)){
                               session = shiny::getDefaultReactiveDomain()
@@ -201,6 +216,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                             private$input = vars.id[1]
                             private$fun.id = vars.id[2]
                             private$id = id
+                            private$max.rep = max.rep
                             private$interval = interval
                             private$async = async
                             private$create_progress(session)
