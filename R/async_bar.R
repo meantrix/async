@@ -114,10 +114,10 @@ async = R6::R6Class(classname = 'async_bar',
       #' @param session : shiny session.
       interrupt_client = function(session){
 
-        jsCode = glue::glue("ClearInterval({funcID})",funcID = private$funcID)
+        jsCode = glue::glue("ClearInterval({fun.id})",funcID = private$fun.id)
         shinyjs::runjs(jsCode)
         private$progress_close(private$id)
-        unlink(private$async$status_file)
+        #unlink(private$async$status_file)
 
       },
 
@@ -138,7 +138,7 @@ async = R6::R6Class(classname = 'async_bar',
 
       },
 
-      observeEvent = function(session){
+      observe_event = function(session){
 
         shiny::observeEvent(input[private$input],{
 
@@ -198,13 +198,22 @@ async = R6::R6Class(classname = 'async_bar',
 
     },
 
-    set_Progress = function(session) {
+    run = function(session) {
 
-
-
+    if(missing(session)){
+        session = shiny::getDefaultReactiveDomain()
     }
 
+    private$observe_event(session)
 
+
+    },
+
+    close = function(){
+
+      private$interrupt_client()
+
+    }
 
 
   )
