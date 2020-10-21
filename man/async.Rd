@@ -7,14 +7,6 @@
 simple tool to pass message of progress and interruption of routines
 between some R processes like shiny reactives and futures routines.
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{If}}{its true generate a reactive expression
-is a expression whose result will change over time.}
-}
-\if{html}{\out{</div>}}
-}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
@@ -30,7 +22,7 @@ be interrupted when the progress is equal to the upper value.}
 
 \item{\code{value_message}}{get job status.}
 
-\item{\code{If}}{its true generate a reactive expression
+\item{\code{reactive}}{If its true generate a reactive expression
 is a expression whose result will change over time.}
 }
 \if{html}{\out{</div>}}
