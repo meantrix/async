@@ -107,7 +107,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                             input = private$input
                             timer = private$interval
 
-                              jsCode = paste0("var ",fun.id," = setInterval(function(){",
+                              jsCode = paste0(fun.id," = setInterval(function(){",
                                             "Shiny.onInputChange('",input,"','_' + Math.random().toString(36).substr(2, 9));",
                                             "},",timer,");")
                             shinyjs::runjs(jsCode)
@@ -136,6 +136,9 @@ async_bar = R6::R6Class(classname = 'async_bar',
 
                                 private$n.rep = private$n.rep + 1
 
+                              } else {
+
+                                private$n.rep = 0
 
                               }
 
