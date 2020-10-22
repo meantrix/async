@@ -233,9 +233,8 @@ async = R6::R6Class(classname = 'async',
                       },
                       #' @description
                       #' Close all routines of async tracking.
-                      #' @param session shiny session
                       finalize = function(){
-                      unlink( private$vars$status_file)
+                      unlink( private$vars$status_file )
 
                       }
 

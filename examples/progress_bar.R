@@ -23,6 +23,7 @@ ui <- tagList(
 
 server <- function(input, output,session) {
   N <- 100
+
   asy1 = async$new(reactive = TRUE,auto.finish = FALSE)
   #asy2 = async$new(reactive = TRUE,auto.finish = FALSE)
 
@@ -51,7 +52,7 @@ server <- function(input, output,session) {
     quantile(rnorm(1000))
   })
 
- bar1 = async_bar$new(async=asy1,id='01')
+ bar1 = async_bar$new(async=asy1,id='01',max.rep = 200,interval = 4000)
  #bar2 = async_bar$new(async=asy2,session=session,id='02')
  bar1$progress(session,input)
  #bar2$progress(session,input)

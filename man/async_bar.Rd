@@ -22,7 +22,7 @@ Reports  async class progress with a shiny bar to end user.
 Interactive environment
 to create a progress  bar of async tracking.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{async_bar$new(async, id, interval = 400, max.rep = 20, detail = "", session)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{async_bar$new(async, id, interval = 1000, max.rep = 50, detail = "")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -34,6 +34,9 @@ to create a progress  bar of async tracking.
 
 \item{\code{interval}}{numeric. Approximate number of milliseconds
 to wait between checks of the job progress.}
+
+\item{\code{max.rep}}{numeric. Maximum number of times that
+a progress value can be repeated.}
 
 \item{\code{detail}}{detail message to display.}
 }
@@ -65,16 +68,9 @@ observe event to checks of the async job progress.
 \subsection{Method \code{finalize()}}{
 Close all routines of async bar.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{async_bar$finalize(session)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{async_bar$finalize()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{session}}{shiny session}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

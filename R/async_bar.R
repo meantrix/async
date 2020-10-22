@@ -13,7 +13,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                           input = NULL,
                           id = NULL,
                           fun.id = NULL,
-                          detail = NULL,
+                          detail = "",
                           interval = NULL,
                           last.val = NULL,
                           max.rep = NULL,
@@ -100,7 +100,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                           },
 
                           create_progress  = function(msg){
-
+                            #browser()
                             if(missing(msg)){ msg = '' }
 
                             fun.id = private$fun.id
@@ -123,7 +123,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                           observe_event = function(session,input){
 
                             shiny::observeEvent(input[[private$input]],{
-
+                              #browser()
                               vars = private$async$status()
                               msg = as.character(vars[2])
                               val = as.numeric(vars[1])
@@ -149,7 +149,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                                   isTRUE(val == max.val) |
                                   isTRUE(private$n.rep > private$max.rep) ) {
 
-                                private$interrupt_client(session)
+                                private$interrupt_client()
 
 
                               } else {
@@ -179,12 +179,13 @@ async_bar = R6::R6Class(classname = 'async_bar',
                           #' @param id character. ID of progress bar.
                           #' @param interval numeric. Approximate number of milliseconds
                           #' to wait between checks of the job progress.
-                          #' @max.rep numeric. Maximum number of times a progress value can be repeated.
+                          #' @param max.rep numeric. Maximum number of times that
+                          #' a progress value can be repeated.
                           #' @param detail detail message to display.
-                          initialize = function(async ,
+                          initialize = function(async,
                                                 id,
                                                 interval=1000,
-                                                max.rep = 100,
+                                                max.rep = 50,
                                                 detail=''){
 
                             checkmate::expect_class(async,'R6')
@@ -202,11 +203,12 @@ async_bar = R6::R6Class(classname = 'async_bar',
                             private$max.rep = max.rep
                             private$interval = interval
                             private$async = async
+                            private$detail = detail
 
                             vars.status = as.numeric(async$.__enclos_env__$private$get_status())
                             last.val  = vars.status[1]
                             msg = ifelse(is.character(vars.status[2]),vars.status[2],'')
-                            private$last.val = ifelse(is.na(last.val),async$lower,last.val)
+                            private$last.val = ifelse(is.numeric(last.val),last.val,async$lower)
                             private$create_progress(msg = msg)
 
                           },
@@ -221,7 +223,6 @@ async_bar = R6::R6Class(classname = 'async_bar',
                             }
 
                             private$observe_event(session,input)
-
 
                           },
                           #' @description
