@@ -1,6 +1,6 @@
 #' @title  R6 Class async_bar
 #' @description
-#' Progress shiny bar to async class
+#' Reports  async class progress with a shiny bar to end user.
 #' @name async_bar
 #' @export
 NULL
@@ -19,19 +19,13 @@ async_bar = R6::R6Class(classname = 'async_bar',
                           max.rep = NULL,
                           rep = 0,
 
-                          #' @description : Create new progress bar.
-                          #' @title progress_new
-                          #' @param id      : ID of progress bar.
-                          #' @param message : Main message to display.
-                          #' @param detail  : detail message to display.
-                          #' @param show    : TRUE/FALSE.
-                          #' @return : js command.
+
                           progress_new = function(id , message , detail , show=TRUE){
                             return(
                               paste0(
                                 "((id , message , detail , show) => {",
                                 "if($('#shiny-notification-panel').length == 0) $('body').append('<div id=\"shiny-notification-panel\"></div>'); ",
-                                "$('#shiny-notification-panel').append(",
+                                "$('#shiny-notifica-panel').append(",
                                 "'<div id=\"shiny-notification-' + id + '\" class=\"shiny-notification\" style=\"display: none;\">' +",
                                 "'<div class=\"shiny-notification-close\"> &times; </div>' +",
                                 "'<div class=\"shiny-notification-content\">' +",
@@ -59,13 +53,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                               )
                             )
                           },
-                          #' @description : Progress Bar Inc.
-                          #' @title progress_inc
-                          #' @param id      : ID of progress bar.
-                          #' @param width   : width value.
-                          #' @return : js command.
-                          #' @export
-                          #'
+
                           progress_inc = function(id , width){
                             return(
                               paste0(
@@ -75,14 +63,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                               )
                             )
                           },
-                          #' @description : Set message to progress bar.
-                          #' @title progress_set
-                          #' @param id      : ID of progress bar.
-                          #' @param message : Main message to display.
-                          #' @param detail  : detail message to display.
-                          #' @param width   : value for width bar.
-                          #' @return : js command.
-                          #'
+
                           progress_set = function(id , message , detail , width){
                             return(
                               paste0("((id , message , detail , width) => {",
@@ -93,33 +74,22 @@ async_bar = R6::R6Class(classname = 'async_bar',
                               )
                             )
                           },
-                          #' @description : Show progres bar.
-                          #' @title progress_showbar
-                          #' @param id      : ID of progress bar.
-                          #' @return : js command.
+
+
                           progress_showbar = function(id){
                             return(paste0("((id) => { $('#shiny-notification-' + id).find('.progress.progress-striped.active').show(); })('" , id , "'); "))
                           },
-                          #' @description : Hide progress bar.
-                          #' @title progress.hide
-                          #' @param id      : ID of progress bar.
-                          #' @return : js command.
+
+
                           progress_hidebar = function(id) {
                             return(paste0("((id) => { $('#shiny-notification-' + id).find('.progress.progress-striped.active').hide(); })('" , id , "'); "))
                           },
 
-                          #' @description : Remove progress bar.
-                          #' @title progress.close
-                          #' @param id      : ID of progress bar.
-                          #' @return : js command.
 
                           progress_close = function(id){
                             return(paste0("$('#shiny-notification-" , id , "').remove(); "))
                           },
 
-                          #' @description : Interrupt progress update in client side.
-                          #' @title interrupt_client
-                          #' @param session : shiny session.
                           interrupt_client = function(session){
                             fun.id = private$fun.id
                             jsCode = paste0("clearInterval(",fun.id,");")
@@ -192,7 +162,15 @@ async_bar = R6::R6Class(classname = 'async_bar',
                         ),
 
                         public = list(
-
+                          #' @description
+                          #' Interactive environment
+                          #' to create a progress  bar of async tracking.
+                          #' @param async R6 class. Object to tracking routines.
+                          #' @param id character. ID of progress bar.
+                          #' @param interval numeric. Approximate number of milliseconds
+                          #' to wait between checks of the job progress.
+                          #' @max.rep numeric. Maximum number of times a progress value can be repeated.
+                          #' @param detail detail message to display.
                           initialize = function(async ,
                                                 id,
                                                 interval=400,
@@ -222,7 +200,10 @@ async_bar = R6::R6Class(classname = 'async_bar',
                             private$create_progress(session)
 
                           },
-
+                          #' @description
+                          #' observe event to checks of the async job progress.
+                          #' @param session shiny session
+                          #' @param input shiny input
                           progress = function(session,input) {
 
                             if(missing(session)){
@@ -233,8 +214,10 @@ async_bar = R6::R6Class(classname = 'async_bar',
 
 
                           },
-
-                          close = function(session){
+                          #' @description
+                          #' Close all routines of async bar.
+                          #' @param session shiny session
+                          finalize = function(session){
                             if(missing(session)){
                               session = shiny::getDefaultReactiveDomain()
                             }
@@ -242,7 +225,6 @@ async_bar = R6::R6Class(classname = 'async_bar',
                             private$interrupt_client(session)
 
                           }
-
 
                         )
 

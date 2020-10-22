@@ -35,6 +35,7 @@ is a expression whose result will change over time.}
 \item \href{#method-progress}{\code{async$progress()}}
 \item \href{#method-status}{\code{async$status()}}
 \item \href{#method-check}{\code{async$check()}}
+\item \href{#method-finalize}{\code{async$finalize()}}
 \item \href{#method-clone}{\code{async$clone()}}
 }
 }
@@ -42,7 +43,7 @@ is a expression whose result will change over time.}
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
-create an interative environment
+create an interactive environment
 to pass progress message between
 R processes.
 \subsection{Usage}{
@@ -127,6 +128,23 @@ the future context
 \if{html}{\out{<div class="r">}}\preformatted{async$check()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-finalize}{}}}
+\subsection{Method \code{finalize()}}{
+Close all routines of async tracking.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{async$finalize()}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{session}}{shiny session}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

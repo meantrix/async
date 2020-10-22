@@ -4,14 +4,14 @@
 \alias{async_bar}
 \title{R6 Class async_bar}
 \description{
-Progress shiny bar to async class
+Reports  async class progress with a shiny bar to end user.
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{async_bar$new()}}
 \item \href{#method-progress}{\code{async_bar$progress()}}
-\item \href{#method-close}{\code{async_bar$close()}}
+\item \href{#method-finalize}{\code{async_bar$finalize()}}
 \item \href{#method-clone}{\code{async_bar$clone()}}
 }
 }
@@ -19,83 +19,62 @@ Progress shiny bar to async class
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
-: Create new progress bar.
-
-
-: Progress Bar Inc.
-
-
-: Set message to progress bar.
-
-
-: Show progres bar.
-
-
-: Hide progress bar.
-
-
-: Remove progress bar.
-
-
-: Interrupt progress update in client side.
+Interactive environment
+to create a progress  bar of async tracking.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{async_bar$new(async, id, interval = 400, detail = "", session)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{async_bar$new(async, id, interval = 400, max.rep = 20, detail = "", session)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{: ID of progress bar.}
+\item{\code{async}}{R6 class. Object to tracking routines.}
 
-\item{\code{id}}{: ID of progress bar.}
+\item{\code{id}}{character. ID of progress bar.}
 
-\item{\code{id}}{: ID of progress bar.}
+\item{\code{interval}}{numeric. Approximate number of milliseconds
+to wait between checks of the job progress.}
 
-\item{\code{id}}{: ID of progress bar.}
-
-\item{\code{id}}{: ID of progress bar.}
-
-\item{\code{id}}{: ID of progress bar.}
-
-\item{\code{detail}}{: detail message to display.}
-
-\item{\code{detail}}{: detail message to display.}
-
-\item{\code{session}}{: shiny session.}
-
-\item{\code{message}}{: Main message to display.}
-
-\item{\code{show}}{: TRUE/FALSE.}
-
-\item{\code{width}}{: width value.}
-
-\item{\code{message}}{: Main message to display.}
-
-\item{\code{width}}{: value for width bar.}
+\item{\code{detail}}{detail message to display.}
 }
 \if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-: js command.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-progress"></a>}}
 \if{latex}{\out{\hypertarget{method-progress}{}}}
 \subsection{Method \code{progress()}}{
+observe event to checks of the async job progress.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{async_bar$progress(session, input)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{session}}{shiny session}
+
+\item{\code{input}}{shiny input}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-close"></a>}}
-\if{latex}{\out{\hypertarget{method-close}{}}}
-\subsection{Method \code{close()}}{
+\if{html}{\out{<a id="method-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-finalize}{}}}
+\subsection{Method \code{finalize()}}{
+Close all routines of async bar.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{async_bar$close(session)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{async_bar$finalize(session)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{session}}{shiny session}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
