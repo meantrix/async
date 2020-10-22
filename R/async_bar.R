@@ -25,7 +25,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                               paste0(
                                 "((id , message , detail , show) => {",
                                 "if($('#shiny-notification-panel').length == 0) $('body').append('<div id=\"shiny-notification-panel\"></div>'); ",
-                                "$('#shiny-notifica-panel').append(",
+                                "$('#shiny-notification-panel').append(",
                                 "'<div id=\"shiny-notification-' + id + '\" class=\"shiny-notification\" style=\"display: none;\">' +",
                                 "'<div class=\"shiny-notification-close\"> &times; </div>' +",
                                 "'<div class=\"shiny-notification-content\">' +",
@@ -92,7 +92,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
 
                           interrupt_client = function(){
                             fun.id = private$fun.id
-                            jsCode = paste0("clearInterval(",fun.id,");")
+                            jsCode = paste0("clearInterval(window.",fun.id,");")
                             shinyjs::runjs(jsCode)
                             shinyjs::runjs(private$progress_close(private$id))
                             #unlink(private$async$status_file)
@@ -107,11 +107,9 @@ async_bar = R6::R6Class(classname = 'async_bar',
                             input = private$input
                             timer = private$interval
 
-                            jsCode = paste0("var ",fun.id," = setInterval(function(){",
+                              jsCode = paste0("var ",fun.id," = setInterval(function(){",
                                             "Shiny.onInputChange('",input,"','_' + Math.random().toString(36).substr(2, 9));",
-                                            "},",timer,");",
-                                            fun.id,"();")
-
+                                            "},",timer,");")
                             shinyjs::runjs(jsCode)
                             shinyjs::runjs(private$progress_new(id = private$id,
                                                                 detail = private$detail,
@@ -133,8 +131,6 @@ async_bar = R6::R6Class(classname = 'async_bar',
 
                               val = ifelse(is.numeric(val),val,private$last.val)
                               msg = ifelse(is.character(msg),msg,'')
-
-                              #browser()
 
                               if( isTRUE(val == private$last.val) ){
 
@@ -210,7 +206,6 @@ async_bar = R6::R6Class(classname = 'async_bar',
                             msg = ifelse(is.character(vars.status[2]),vars.status[2],'')
                             private$last.val = ifelse(is.numeric(last.val),last.val,async$lower)
                             private$create_progress(msg = msg)
-
                           },
                           #' @description
                           #' observe event to checks of the async job progress.

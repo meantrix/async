@@ -8,18 +8,10 @@ plan(multiprocess)
 ui <- tagList(
   shinyjs::useShinyjs(),
   fluidPage(
-  titlePanel("Long Run Stoppable Async"),
-  sidebarLayout(
-    sidebarPanel(
-      actionButton('cancel', 'Cancel'),
-      actionButton('status', 'Check Status')
-    ),
-    mainPanel(
-      tableOutput("result")
-    )
+  titlePanel("Long Run Stoppable Async")
   )
 )
-)
+
 
 server <- function(input, output,session) {
   N <- 100
@@ -34,13 +26,13 @@ server <- function(input, output,session) {
     for(i in 1:N){
 
       # Long Running Task
-      Sys.sleep(1)
+      Sys.sleep(2)
 
       # Notify status file of progress
       asy1$progress(100*i/N, msg = 'test progress')
       #asy2$progress(100*i/N, msg = 'test progress')
 
-      if(i > 90){
+      if(i > 9){
 
         asy1$interrupt('close future...')
 
