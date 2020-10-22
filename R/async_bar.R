@@ -198,6 +198,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                             private$interval = interval
                             private$async = async
                             private$create_progress(session)
+                            private$last.value = async$lower
 
                           },
                           #' @description
