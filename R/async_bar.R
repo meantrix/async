@@ -15,9 +15,9 @@ async_bar = R6::R6Class(classname = 'async_bar',
                           fun.id = NULL,
                           detail = NULL,
                           interval = NULL,
-                          last.value = NULL,
+                          last.val = NULL,
                           max.rep = NULL,
-                          rep = 0,
+                          n.rep = 0,
 
 
                           progress_new = function(id , message , detail , show=TRUE){
@@ -59,7 +59,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                               paste0(
                                 "((id , width) => { $('#shiny-notification-' + id).",
                                 "find('.progress.progress-striped.active').",
-                                "find('.progress-bar').attr('style','width:' + width) })('" , id , "' , '", (100 * width) %>% round(.) %>% as.character(.) %>% paste0(.,"%") , "');"
+                                "find('.progress-bar').attr('style','width:' + width) })('" , id , "' , '", (100 * width) %>% round(.,digits = 0) %>% as.character(.) %>% paste0(.,"%") , "');"
                               )
                             )
                           },
@@ -70,7 +70,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                                      "$('#shiny-notification-' + id).find('.progress-message').html(message);"	,
                                      "$('#shiny-notification-' + id).find('.progress-detail').html(detail);",
                                      "$('#shiny-notification-' + id).find('.progress.progress-striped.active').find('.progress-bar').attr('style','width:' + width);",
-                                     "})('" , id , "' , '" , message , "' ,  '" , detail , "' , '" , (100 * width) %>% round(.) %>% as.character(.) %>% paste0(.,"%") ,"'); "
+                                     "})('" , id , "' , '" , message , "' ,  '" , detail , "' , '" , (100 * width) %>% round(.,digits = 0) %>% as.character(.) %>% paste0(.,"%") ,"'); "
                               )
                             )
                           },
@@ -90,7 +90,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                             return(paste0("$('#shiny-notification-" , id , "').remove(); "))
                           },
 
-                          interrupt_client = function(session){
+                          interrupt_client = function(){
                             fun.id = private$fun.id
                             jsCode = paste0("clearInterval(",fun.id,");")
                             shinyjs::runjs(jsCode)
@@ -99,7 +99,9 @@ async_bar = R6::R6Class(classname = 'async_bar',
 
                           },
 
-                          create_progress  = function(session){
+                          create_progress  = function(msg){
+
+                            if(missing(msg)){ msg = '' }
 
                             fun.id = private$fun.id
                             input = private$input
@@ -111,7 +113,9 @@ async_bar = R6::R6Class(classname = 'async_bar',
                                             fun.id,"();")
 
                             shinyjs::runjs(jsCode)
-                            shinyjs::runjs(private$progress_new(id = private$id, detail = private$detail, message = private$msg))
+                            shinyjs::runjs(private$progress_new(id = private$id,
+                                                                detail = private$detail,
+                                                                message = msg))
                             shinyjs::runjs(private$progress_showbar(id = private$id))
 
                           },
@@ -119,32 +123,38 @@ async_bar = R6::R6Class(classname = 'async_bar',
                           observe_event = function(session,input){
 
                             shiny::observeEvent(input[[private$input]],{
-                              #browser()
+
                               vars = private$async$status()
+                              msg = as.character(vars[2])
+                              val = as.numeric(vars[1])
 
-                              max.value = private$async$upper
-                              min.value = private$async$lower
-                              value = as.numeric(vars[1])
+                              max.val = private$async$upper
+                              min.val = private$async$lower
 
-                              if(value == private$las.value){
+                              val = ifelse(is.numeric(val),val,private$last.val)
+                              msg = ifelse(is.character(msg),msg,'')
 
-                                private$rep = private$rep + 1
+                              #browser()
+
+                              if( isTRUE(val == private$last.val) ){
+
+                                private$n.rep = private$n.rep + 1
+
 
                               }
 
-                              private$last.value = value
+                              private$last.val = val
 
-                              msg = as.character(vars[2])
-                              max.rep = private$max.rep
-
-
-                              if( isTRUE(value == 7777) | isTRUE(value == max.value) | rep > max.rep ) {
+                              if( isTRUE(val == 7777) |
+                                  isTRUE(val == max.val) |
+                                  isTRUE(private$n.rep > private$max.rep) ) {
 
                                 private$interrupt_client(session)
 
+
                               } else {
 
-                                width = (value - min.value)/(max.value-min.value)
+                                width = (val - min.val)/(max.val-min.val)
 
                                 shinyjs::runjs(private$progress_set(id = private$id ,
                                                                     message = msg ,
@@ -152,7 +162,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                                                                     width = width))
                               }
 
-                            })
+                            },domain = session)
 
 
                           }
@@ -173,20 +183,15 @@ async_bar = R6::R6Class(classname = 'async_bar',
                           #' @param detail detail message to display.
                           initialize = function(async ,
                                                 id,
-                                                interval=400,
-                                                max.rep = 20,
-                                                detail='',
-                                                session){
+                                                interval=1000,
+                                                max.rep = 100,
+                                                detail=''){
 
                             checkmate::expect_class(async,'R6')
                             checkmate::expect_character(id,max.len = 1)
                             checkmate::expect_character(detail,max.len = 1)
                             checkmate::expect_numeric(interval,lower = 0,upper = Inf)
                             checkmate::expect_numeric(max.rep,lower = 1,upper = Inf)
-
-                            if(missing(session)){
-                              session = shiny::getDefaultReactiveDomain()
-                            }
 
                             vars.id = do.call(paste0, Map(stringi::stri_rand_strings, n=2, length=c(5, 4, 1),
                                                           pattern = c('[A-Z]', '[0-9]', '[A-Z]')))
@@ -197,8 +202,12 @@ async_bar = R6::R6Class(classname = 'async_bar',
                             private$max.rep = max.rep
                             private$interval = interval
                             private$async = async
-                            private$create_progress(session)
-                            private$last.value = async$lower
+
+                            vars.status = as.numeric(async$.__enclos_env__$private$get_status())
+                            last.val  = vars.status[1]
+                            msg = ifelse(is.character(vars.status[2]),vars.status[2],'')
+                            private$last.val = ifelse(is.na(last.val),async$lower,last.val)
+                            private$create_progress(msg = msg)
 
                           },
                           #' @description
@@ -217,13 +226,8 @@ async_bar = R6::R6Class(classname = 'async_bar',
                           },
                           #' @description
                           #' Close all routines of async bar.
-                          #' @param session shiny session
-                          finalize = function(session){
-                            if(missing(session)){
-                              session = shiny::getDefaultReactiveDomain()
-                            }
-
-                            private$interrupt_client(session)
+                          finalize = function(){
+                            private$interrupt_client()
 
                           }
 
