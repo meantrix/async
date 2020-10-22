@@ -3,17 +3,17 @@
 ![logo](https://github.com/meantrix/graphicalresources/blob/master/logo-meantrix/header_transparente_colorido.png)
 
 <!--- These are examples. See https://shields.io for others or to customize this set of shields. You might want to include dependencies, project status and licence info here --->
-[![version](https://img.shields.io/badge/version-0.0.1-green.svg)](https://semver.org)
+[![version](https://img.shields.io/badge/version-0.0.2-green.svg)](https://semver.org)
 
 
 async is a `tool` for passing messages between some R processes like shiny reactives and futures routines.
-
+The great advantage of using this package is the fact that there is no copies creation of the shiny session in multiple workers to tracking asynchronous or parallel jobs.
 
 
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
-* You have installed the latest version of `R >= 3.5.0`
+* We recommend that you have the latest version of R `R >= 3.5.0`
 * You have a `Windows/Linux/Mac` machine.
 
 ## Installing async

@@ -146,7 +146,7 @@ async = R6::R6Class(classname = 'async',
                     public = list(
 
                       #' @description
-                      #' create an interative environment
+                      #' create an interactive environment
                       #' to pass progress message between
                       #' R processes.
                       #' @param lower The value that represents the starting
@@ -230,6 +230,12 @@ async = R6::R6Class(classname = 'async',
                       #' the future context
                       check = function(){
                         do.call(private$check_status,args = list())
+                      },
+                      #' @description
+                      #' Close all routines of async tracking.
+                      finalize = function(){
+                      unlink( private$vars$status_file )
+
                       }
 
 
