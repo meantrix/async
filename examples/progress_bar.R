@@ -31,7 +31,7 @@ server <- function(input, output,session) {
 
       # Notify status file of progress
       asy1$set(100*i/N, msg = 'test progress')
-      asy2$set(100*i/N, msg = 'test progress')
+      asy2$inc(1, msg = 'test progress')
 
       if(i > 70){
 

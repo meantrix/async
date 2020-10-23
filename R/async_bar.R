@@ -70,7 +70,7 @@ async_bar = R6::R6Class(classname = 'async_bar',
                                      "$('#shiny-notification-' + id).find('.progress-message').html(message);"	,
                                      "$('#shiny-notification-' + id).find('.progress-detail').html(detail);",
                                      "$('#shiny-notification-' + id).find('.progress.progress-striped.active').find('.progress-bar').attr('style','width:' + width);",
-                                     "})('" , id , "' , '" , message , "' ,  '" , detail , "' , '" , (100 * width) %>% round(.,digits = 0) %>% as.character(.) %>% paste0(.,"%") ,"'); "
+                                     "})('" , id , "' , '" , message , "' ,  '" , detail , "' , '" , (100 * width) %>% round(.,digits = 1) %>% as.character(.) %>% paste0(.,"%") ,"'); "
                               )
                             )
                           },
