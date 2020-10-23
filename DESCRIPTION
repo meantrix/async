@@ -12,8 +12,8 @@ Authors@R:
 Maintainer: Meantrix <dev@meantrix.com>
 Description: A simple tools for passing messages between some R processes like shiny reactives and futures routines.
 Depends:
-    R (>= 3.5.0),
-    shiny (>= 1.5.0),
+    R (>= 3.6.0),
+    shiny (>= 1.4.0),
     R6 (>= 2.4.1),
     checkmate,
     stringi,

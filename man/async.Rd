@@ -48,7 +48,7 @@ create an interactive environment
 to pass progress message between
 R processes.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{async$new(lower = 0, upper = 100, auto.finish = TRUE, reactive = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{async$new(lower, upper, auto.finish = TRUE, reactive = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
