@@ -30,8 +30,8 @@ server <- function(input, output,session) {
       Sys.sleep(2)
 
       # Notify status file of progress
-      asy1$progress(100*i/N, msg = 'test progress')
-      asy2$progress(100*i/N, msg = 'test progress')
+      asy1$set(100*i/N, msg = 'test progress')
+      asy2$set(100*i/N, msg = 'test progress')
 
       if(i > 70){
 

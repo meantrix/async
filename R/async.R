@@ -40,7 +40,7 @@ async = R6::R6Class(classname = 'async',
                                   upper = 100,
                                   lower = 0,
                                   auto.finish = TRUE,
-                                  vm = NULL
+                                  vm = c('value'= 0, 'message' = '')
                       ),
                       rx_trigger =  reactiveTrigger(),
                       .reactive =TRUE,
@@ -52,7 +52,7 @@ async = R6::R6Class(classname = 'async',
                         vm = stringr::str_split(vm,' zzzz ')[[1]]
                         names(vm) = c('value','message')
                         private$vars$vm = vm
-                        vm
+                        return(vm)
                       },
 
                       set_status = function(value, msg = ""){
@@ -157,20 +157,33 @@ async = R6::R6Class(classname = 'async',
                       #'be interrupted when the progress is equal to the upper value.
                       #' @param reactive If its true generate a reactive expression
                       #' is a expression whose result will change over time.
-                      initialize = function(lower=0, upper=100,
+                      initialize = function(lower, upper,
                                             auto.finish = TRUE,
                                             reactive=TRUE){
 
-                        checkmate::expect_numeric(c(lower,upper),lower = 0,upper = 100)
+                        if(missing(lower)){
+                          lower = 0
+                        }
+
+                        if(missing(upper)) {
+                          upper = 100
+                        }
+
+                        checkmate::expect_numeric(c(lower,upper),lower = 0,upper = 1000)
                         checkmate::expect_logical(auto.finish,max.len = 1)
                         checkmate::expect_logical(reactive,max.len = 1)
+
 
                         status_file = tempfile()
                         private$vars$status_file = status_file
                         #init.msg = paste0(0,' zzzz ','init file')
                         # write(init.msg, status_file)
+
                         vm = private$vars$vm
-                        write(paste0(vm$value,' zzzz ',vm$msg), private$vars$status_file)
+                        vm['value'] = lower
+
+                        write(paste0(vm['value'],' zzzz ',vm['message']),
+                              private$vars$status_file)
 
                         private$.reactive = reactive
                         private$rx_trigger =  reactiveTrigger()
@@ -200,7 +213,7 @@ async = R6::R6Class(classname = 'async',
                       #' relative to lower and upper.
                       #' @param msg A single-element character vector;
                       #' the message to be displayed to the user.
-                      progress = function(value=0,msg="Running..."){
+                      set = function(value=0,msg="Running..."){
                         args = list(value = value, msg = msg)
                         checkmate::expect_numeric(value,lower = private$vars$lower,
                                                   upper = private$vars$upper)
@@ -213,6 +226,31 @@ async = R6::R6Class(classname = 'async',
                           private$rx_trigger$trigger()
                         }
                       },
+
+                      #' @description
+                      #' Set progress to future processes.
+                      #' @param value  the value at which to set the progress,
+                      #' relative to lower and upper.
+                      #' @param msg A single-element character vector;
+                      #' the message to be displayed to the user.
+                      inc = function(value=0,msg="Running..."){
+                        checkmate::expect_numeric(value,lower = private$vars$lower,
+                                                  upper = private$vars$upper)
+                        checkmate::expect_character(msg,max.len = 1)
+
+                        value = as.numeric(private$vars$vm[1]) + value
+                        args = list(value = value, msg = msg)
+
+                        do.call(private$check_status,args = list())
+                        do.call(private$set_status,args = args)
+
+                        if(isTRUE(private$.reactive)){
+                          private$rx_trigger$trigger()
+                        }
+                      },
+
+
+
                       #' @description
                       #' get the status of the process out
                       #' of the future context

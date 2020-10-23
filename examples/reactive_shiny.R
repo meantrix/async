@@ -9,8 +9,8 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   asy <- async$new(reactive = TRUE)
 
-  observeEvent(input$minus, { asy$progress(value=10) })
-  observeEvent(input$plus,  { asy$progress(value=20) })
+  observeEvent(input$minus, { asy$set(value=10) })
+  observeEvent(input$plus,  { asy$set(value=20) })
   output$value <- renderText({ asy$status() })
 }
 

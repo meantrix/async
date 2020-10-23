@@ -32,7 +32,8 @@ is a expression whose result will change over time.}
 \itemize{
 \item \href{#method-new}{\code{async$new()}}
 \item \href{#method-interrupt}{\code{async$interrupt()}}
-\item \href{#method-progress}{\code{async$progress()}}
+\item \href{#method-set}{\code{async$set()}}
+\item \href{#method-inc}{\code{async$inc()}}
 \item \href{#method-status}{\code{async$status()}}
 \item \href{#method-check}{\code{async$check()}}
 \item \href{#method-finalize}{\code{async$finalize()}}
@@ -87,12 +88,33 @@ the message to be displayed to the user.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-progress"></a>}}
-\if{latex}{\out{\hypertarget{method-progress}{}}}
-\subsection{Method \code{progress()}}{
+\if{html}{\out{<a id="method-set"></a>}}
+\if{latex}{\out{\hypertarget{method-set}{}}}
+\subsection{Method \code{set()}}{
 Set progress to future processes.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{async$progress(value = 0, msg = "Running...")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{async$set(value = 0, msg = "Running...")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{value}}{the value at which to set the progress,
+relative to lower and upper.}
+
+\item{\code{msg}}{A single-element character vector;
+the message to be displayed to the user.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-inc"></a>}}
+\if{latex}{\out{\hypertarget{method-inc}{}}}
+\subsection{Method \code{inc()}}{
+Set progress to future processes.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{async$inc(value = 0, msg = "Running...")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -138,13 +160,6 @@ Close all routines of async tracking.
 \if{html}{\out{<div class="r">}}\preformatted{async$finalize()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{session}}{shiny session}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
