@@ -1,11 +1,11 @@
-#' @title  R6 Class async_bar
+#' @title  R6 Class asyncBar
 #' @description
 #' Reports  async class progress with a shiny bar to end user.
-#' @name async_bar
+#' @name asyncBar
 #' @export
 NULL
 
-async_bar = R6::R6Class(classname = 'async_bar',
+asyncBar = R6::R6Class(classname = 'asyncBar',
 
                         private = list(
 

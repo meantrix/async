@@ -45,8 +45,8 @@ server <- function(input, output,session) {
     quantile(rnorm(1000))
   })
 
- bar1 = async_bar$new(async=asy1,id='01',max.rep = 20,interval = 1000)
- bar2 = async_bar$new(async=asy2,id='02',max.rep = 20,interval = 1000)
+ bar1 = asyncBar$new(async=asy1,id='01',max.rep = 20,interval = 1000)
+ bar2 = asyncBar$new(async=asy2,id='02',max.rep = 20,interval = 1000)
  bar1$progress(session,input)
  bar2$progress(session,input)
 
