@@ -49,9 +49,9 @@ server <- function(input, output,session) {
  bar2 = asyncBar$new(async=asy2,id='02',max.rep = 20,interval = 1000)
  bar1$progress(session,input)
  bar2$progress(session,input)
+ #asy1$finalize()
+ #bar1$finalize()
 
-
- #browser()
 
 
 }

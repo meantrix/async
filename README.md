@@ -1,6 +1,6 @@
 # Async
 
-![logo](https://github.com/meantrix/async/blob/master/data/header_transparente_colorido.png)
+![logo](https://github.com/meantrix/async/blob/master/inst/header_transparente_colorido.png)
 
 <!--- These are examples. See https://shields.io for others or to customize this set of shields. You might want to include dependencies, project status and licence info here --->
 [![version](https://img.shields.io/badge/version-0.0.3-green.svg)](https://semver.org)
@@ -13,7 +13,7 @@ The great advantage of using this package is the fact that there is no copies cr
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
-* We recommend that you have the latest version of R `R >= 3.5.0`
+* We recommend that you have `R >= 3.5.0`
 * You have a `Windows/Linux/Mac` machine.
 
 ## Installing async
