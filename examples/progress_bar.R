@@ -33,11 +33,11 @@ server <- function(input, output,session) {
       asy1$set(100*i/N, msg = 'test progress')
       asy2$inc(1, msg = 'test progress')
 
-      if(i > 70){
-
-        asy1$interrupt('close future...')
-
-      }
+      # if(i > 70){
+      #
+      #   asy1$interrupt('close future...')
+      #
+      # }
 
     }
 

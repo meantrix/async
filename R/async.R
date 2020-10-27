@@ -238,6 +238,8 @@ async = R6::R6Class(classname = 'async',
                                                   upper = private$vars$upper)
                         checkmate::expect_character(msg,max.len = 1)
 
+                        do.call(private$get_status,args = list())
+
                         value = as.numeric(private$vars$vm[1]) + value
                         args = list(value = value, msg = msg)
 
@@ -252,7 +254,7 @@ async = R6::R6Class(classname = 'async',
 
 
                       #' @description
-                      #' get the status of the process out
+                      #' get the status process out
                       #' of the future context
                       status = function(){
 
@@ -264,7 +266,7 @@ async = R6::R6Class(classname = 'async',
                         return(private$vars$vm)
                       },
                       #' @description
-                      #' Check the status of the process in
+                      #' Check the status process in
                       #' the future context
                       check = function(){
                         do.call(private$check_status,args = list())
