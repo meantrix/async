@@ -21,7 +21,7 @@ save_async = function(async, file){
   checkmate::expect_class(async,'async')
   checkmate::expect_character(file,max.len = 1)
 
-  file.ext = any(equals(tools::file_ext(file),c("rds","RDS")))
+  file.ext = any(magrittr::equals(tools::file_ext(file),c("rds","RDS")))
 
   if(!file.ext) {
     stop('output format must be rds')
