@@ -3,6 +3,7 @@
 export("%>%")
 export(async)
 export(asyncBar1)
+export(asyncBar2)
 export(load_async)
 export(save_async)
 importFrom(magrittr,"%>%")

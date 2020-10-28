@@ -7,6 +7,7 @@ NULL
 asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                         private = list(
                           async = NULL,
+                          msg = NULL,
                           input = NULL,
                           id = NULL,
                           message = NULL,
@@ -98,7 +99,7 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                           create_progress  = function(){
                             vars = private$async$.__enclos_env__$private$get_status()
                             detail = as.character(vars[3])
-                            msg = as.character(vars[2])
+                            msg = private$msg
                             val = as.numeric(vars[1])
                             funid = private$funid
                             input = private$input
@@ -117,7 +118,7 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                               #browser()
                               vars = private$async$status()
                               detail = as.character(vars[3])
-                              msg = as.character(vars[2])
+                              msg = private$msg
                               val = as.numeric(vars[1])
                               max.val = private$async$upper
                               min.val = private$async$lower
@@ -188,15 +189,25 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                           #' to wait between checks of the job progress.
                           #' @param max.rep numeric. Maximum number of times that
                           #' a progress value can be repeated.
+                          #' @param msg A single-element character vector;
+                          #'  the message to be displayed to the user,
                           initialize = function(async,
                                                 id,
                                                 interval=1000,
-                                                max.rep = 50){
+                                                max.rep = 50,
+                                                msg){
+
+
+                            if(missing(msg)){
+                              msg = ""
+                            }
+
                             checkmate::expect_class(async,'R6')
                             checkmate::expect_character(id,max.len = 1)
-                            checkmate::expect_character(detail,max.len = 1)
+                            checkmate::expect_character(msg,max.len = 1)
                             checkmate::expect_numeric(interval,lower = 0,upper = Inf)
                             checkmate::expect_numeric(max.rep,lower = 1,upper = Inf)
+
                             vars.id = do.call(paste0, Map(stringi::stri_rand_strings, n=4, length=c(5, 4, 1),
                                                           pattern = c('[A-Z]', '[0-9]', '[A-Z]')))
                             private$input = vars.id[1]
@@ -207,10 +218,12 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                             private$max.rep = max.rep
                             private$interval = interval
                             private$async = async
-                            private$detail = detail
+
                             vars.status = as.numeric(async$.__enclos_env__$private$get_status())
                             last.val  = vars.status[1]
+                            private$msg = msg
                             private$last.val = ifelse(is.numeric(last.val),last.val,async$lower)
+
                             private$create_progress()
                           },
                           #' @description
@@ -238,7 +251,7 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                             private$observe_event_cancel(session,input)
 
 
-                          }
+                          },
                           #' @description
                           #' Close all routines of async bar.
                           finalize = function(){

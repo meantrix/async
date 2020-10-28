@@ -148,7 +148,6 @@ asyncBar1 = R6::R6Class(classname = 'asyncBar1',
                                                 max.rep = 50){
                             checkmate::expect_class(async,'R6')
                             checkmate::expect_character(id,max.len = 1)
-                            checkmate::expect_character(detail,max.len = 1)
                             checkmate::expect_numeric(interval,lower = 0,upper = Inf)
                             checkmate::expect_numeric(max.rep,lower = 1,upper = Inf)
                             vars.id = do.call(paste0, Map(stringi::stri_rand_strings, n=2, length=c(5, 4, 1),
@@ -158,11 +157,13 @@ asyncBar1 = R6::R6Class(classname = 'asyncBar1',
                             private$id = id
                             private$max.rep = max.rep
                             private$interval = interval
+
                             private$async = async
-                            private$detail = detail
+
                             vars.status = as.numeric(async$.__enclos_env__$private$get_status())
                             last.val  = vars.status[1]
                             private$last.val = ifelse(is.numeric(last.val),last.val,async$lower)
+
                             private$create_progress()
                           },
                           #' @description
