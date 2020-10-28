@@ -85,7 +85,7 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                                    ".find('.progress-message')",
                                    ".append(",
                                    "'<a id=\"' + cancelid + '\" class=\"action-button shiny-bound-input\"' +",
-                                   "'style=\"font-size: 12px; cursor: pointer; font-weight: 500;\">Cancel</a>'",
+                                   "'style=\"font-size: 12px; cursor: pointer; font-weight: 500;\"> Cancel</a>'",
                                    ");",
                                    "})('" , id , "' , '" , cancelid ,"');"
                             )
