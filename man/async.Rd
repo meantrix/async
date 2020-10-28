@@ -48,7 +48,7 @@ create an interactive environment
 to pass progress message between
 R processes.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{async$new(lower, upper, auto.finish = TRUE, reactive = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{async$new(lower, upper, auto.finish = TRUE, reactive = TRUE, msg, detail)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -65,6 +65,12 @@ be interrupted when the progress is equal to the upper value.}
 
 \item{\code{reactive}}{If its true generate a reactive expression
 is a expression whose result will change over time.}
+
+\item{\code{msg}}{A single-element character vector;
+the initial message to be displayed to the user.}
+
+\item{\code{detail}}{A single-element character vector;
+the initial detail message to be displayed to the user.}
 }
 \if{html}{\out{</div>}}
 }
@@ -75,14 +81,17 @@ is a expression whose result will change over time.}
 \subsection{Method \code{interrupt()}}{
 Interrupt checking to future processes.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{async$interrupt(msg = "process interrupted")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{async$interrupt(msg = "process interrupted", detail = "")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{msg}}{A single-element character vector;
-the message to be displayed to the user.}
+the interrupt message to be displayed to the user.}
+
+\item{\code{detail}}{A single-element character vector;
+the interrupt detail message to be displayed to the user.}
 }
 \if{html}{\out{</div>}}
 }
@@ -91,9 +100,9 @@ the message to be displayed to the user.}
 \if{html}{\out{<a id="method-set"></a>}}
 \if{latex}{\out{\hypertarget{method-set}{}}}
 \subsection{Method \code{set()}}{
-Set progress to future processes.
+Set progress the tracking progress.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{async$set(value = 0, msg = "Running...")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{async$set(value = 0, msg = "Running...", detail = "")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -104,6 +113,9 @@ relative to lower and upper.}
 
 \item{\code{msg}}{A single-element character vector;
 the message to be displayed to the user.}
+
+\item{\code{detail}}{A single-element character vector;
+the detail message to be displayed to the user.}
 }
 \if{html}{\out{</div>}}
 }
@@ -112,9 +124,9 @@ the message to be displayed to the user.}
 \if{html}{\out{<a id="method-inc"></a>}}
 \if{latex}{\out{\hypertarget{method-inc}{}}}
 \subsection{Method \code{inc()}}{
-Set progress to future processes.
+Increment the tracking progress.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{async$inc(value = 0, msg = "Running...")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{async$inc(value = 0, msg = "Running...", detail = "")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -125,6 +137,9 @@ relative to lower and upper.}
 
 \item{\code{msg}}{A single-element character vector;
 the message to be displayed to the user.}
+
+\item{\code{detail}}{A single-element character vector;
+the detail message to be displayed to the user.}
 }
 \if{html}{\out{</div>}}
 }
@@ -133,7 +148,7 @@ the message to be displayed to the user.}
 \if{html}{\out{<a id="method-status"></a>}}
 \if{latex}{\out{\hypertarget{method-status}{}}}
 \subsection{Method \code{status()}}{
-get the status of the process out
+get the status process out
 of the future context
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{async$status()}\if{html}{\out{</div>}}
@@ -144,7 +159,7 @@ of the future context
 \if{html}{\out{<a id="method-check"></a>}}
 \if{latex}{\out{\hypertarget{method-check}{}}}
 \subsection{Method \code{check()}}{
-Check the status of the process in
+Check the status process in
 the future context
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{async$check()}\if{html}{\out{</div>}}

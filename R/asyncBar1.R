@@ -1,7 +1,7 @@
-#' @title  R6 Class asyncBar
+#' @title  R6 Class asyncBar1
 #' @description
 #' Reports  async class progress with a default shiny bar to end user.
-#' @name asyncBar
+#' @name asyncBar1
 #' @export
 NULL
 

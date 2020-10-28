@@ -157,6 +157,10 @@ async = R6::R6Class(classname = 'async',
                       #'be interrupted when the progress is equal to the upper value.
                       #' @param reactive If its true generate a reactive expression
                       #' is a expression whose result will change over time.
+                      #' @param msg A single-element character vector;
+                      #' the initial message to be displayed to the user.
+                      #' @param detail A single-element character vector;
+                      #' the initial detail message to be displayed to the user.
                       initialize = function(lower, upper,
                                             auto.finish = TRUE,
                                             reactive=TRUE,
@@ -210,10 +214,12 @@ async = R6::R6Class(classname = 'async',
                       #' @description
                       #' Interrupt checking to future processes.
                       #' @param msg A single-element character vector;
-                      #' the message to be displayed to the user.
-                      interrupt = function(msg="process interrupted"){
+                      #' the interrupt message to be displayed to the user.
+                      #' @param detail A single-element character vector;
+                      #' the interrupt detail message to be displayed to the user.
+                      interrupt = function(msg="process interrupted",detail =''){
 
-                        args = list(value = 7777, msg = msg)
+                        args = list(value = 7777, msg = msg, detail ='')
                         do.call(private$set_status, args = args)
 
                         if(isTRUE(private$.reactive)){
@@ -221,11 +227,13 @@ async = R6::R6Class(classname = 'async',
                         }
                       },
                       #' @description
-                      #' Set progress to future processes.
+                      #' Set progress the tracking progress.
                       #' @param value  the value at which to set the progress,
                       #' relative to lower and upper.
                       #' @param msg A single-element character vector;
                       #' the message to be displayed to the user.
+                      #' @param detail A single-element character vector;
+                      #' the detail message to be displayed to the user.
                       set = function(value=0,msg="Running...",detail=''){
                         args = list(value = value, msg = msg,detail = detail)
                         checkmate::expect_numeric(value,lower = private$vars$lower,
@@ -242,11 +250,13 @@ async = R6::R6Class(classname = 'async',
                       },
 
                       #' @description
-                      #' Set progress to future processes.
+                      #' Increment the tracking progress.
                       #' @param value  the value at which to set the progress,
                       #' relative to lower and upper.
                       #' @param msg A single-element character vector;
                       #' the message to be displayed to the user.
+                      #' @param detail A single-element character vector;
+                      #' the detail message to be displayed to the user.
                       inc = function(value=0,msg="Running...",detail=''){
                         checkmate::expect_numeric(value,lower = private$vars$lower,
                                                   upper = private$vars$upper)
