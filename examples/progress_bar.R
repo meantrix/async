@@ -30,7 +30,7 @@ server <- function(input, output,session) {
       Sys.sleep(2)
 
       # Notify status file of progress
-      asy1$set(100*i/N, msg = 'test progress')
+      asy1$set(100*i/N, msg = 'test progress',detail='simple detail')
       asy2$inc(1, msg = 'test progress')
 
       # if(i > 70){
@@ -45,12 +45,10 @@ server <- function(input, output,session) {
     quantile(rnorm(1000))
   })
 
- bar1 = asyncBar$new(async=asy1,id='01',max.rep = 20,interval = 1000)
- bar2 = asyncBar$new(async=asy2,id='02',max.rep = 20,interval = 1000)
+ bar1 = asyncBar1$new(async=asy1,id='01',max.rep = 20,interval = 1000)
+ bar2 = asyncBar1$new(async=asy2,id='02',max.rep = 20,interval = 1000)
  bar1$progress(session,input)
  bar2$progress(session,input)
- #asy1$finalize()
- #bar1$finalize()
 
 
 
