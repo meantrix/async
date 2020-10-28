@@ -55,7 +55,7 @@ async = R6::R6Class(classname = 'async',
                         return(vm)
                       },
 
-                      set_status = function(value, msg = "",detail=''){
+                      set_status = function(value, msg = "",detail=""){
 
                         vm = paste0(value,' zzzz ',msg ,' zzzz ',detail)
                         write(vm, private$vars$status_file)
@@ -176,11 +176,11 @@ async = R6::R6Class(classname = 'async',
                         }
 
                         if(missing(msg)){
-                          msg = ''
+                          msg = ""
                         }
 
                         if(missing(detail)){
-                          detail = ''
+                          detail = ""
                         }
 
                         checkmate::expect_numeric(c(lower,upper),lower = 0,upper = 1000)
@@ -217,7 +217,7 @@ async = R6::R6Class(classname = 'async',
                       #' the interrupt message to be pass between processes.
                       #' @param detail A single-element character vector;
                       #' the interrupt detail message to be pass between processes.
-                      interrupt = function(msg="process interrupted",detail =''){
+                      interrupt = function(msg="process interrupted", detail =""){
 
                         args = list(value = 7777, msg = msg, detail ='')
                         do.call(private$set_status, args = args)
@@ -234,7 +234,7 @@ async = R6::R6Class(classname = 'async',
                       #' the message to be pass between processes.
                       #' @param detail A single-element character vector;
                       #' the detail message to be pass between processes.
-                      set = function(value=0,msg="Running...",detail=''){
+                      set = function(value=0, msg="Running...", detail=""){
                         args = list(value = value, msg = msg,detail = detail)
                         checkmate::expect_numeric(value,lower = private$vars$lower,
                                                   upper = private$vars$upper)
@@ -257,7 +257,7 @@ async = R6::R6Class(classname = 'async',
                       #' the message to be pass between processes.
                       #' @param detail A single-element character vector;
                       #' the detail message to be pass between processes.
-                      inc = function(value=0,msg="Running...",detail=''){
+                      inc = function(value=0, msg="Running...", detail=""){
                         checkmate::expect_numeric(value,lower = private$vars$lower,
                                                   upper = private$vars$upper)
                         checkmate::expect_character(msg,max.len = 1)
