@@ -71,7 +71,7 @@ observe event to checks of the async job progress.
 display  a cancel button to end user
 associated with the process tracked by the async class
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{asyncBar2$cancel(session, input)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{asyncBar2$cancel(session, input, not.msg)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -80,6 +80,8 @@ associated with the process tracked by the async class
 \item{\code{session}}{shiny session}
 
 \item{\code{input}}{shiny input}
+
+\item{\code{not.msg}}{Content of notification message}
 }
 \if{html}{\out{</div>}}
 }

@@ -11,6 +11,7 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                           input = NULL,
                           id = NULL,
                           message = NULL,
+                          notid = NULL,
                           funid = NULL,
                           cancelid = NULL,
                           counterid = NULL,
@@ -134,11 +135,13 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                               if( isTRUE(val == 7777) |
                                   isTRUE(val == max.val) |
                                   isTRUE(private$n.rep > private$max.rep) ) {
+
+                                shiny::removeNotification(private$notid)
                                 private$interrupt_client()
+
                               } else {
                                 width = (val - min.val)/(max.val-min.val)
                                 shinyjs::runjs(private$progress_set(id = private$id ,
-                                                                    message = msg ,
                                                                     detail = detail,
                                                                     width = width))
                               }
@@ -152,7 +155,7 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                             counterid = private$counterid
 
 
-                            shinyjs::runjs(progress_cancel(id = id,cancelid = cancelid))
+                            shinyjs::runjs(private$progress_cancel(id = id,cancelid = cancelid))
 
                             jsCode = paste0(
                             "var ",counterid," = 0;",
@@ -165,14 +168,17 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
 
 
                           },
-                          observe_event_cancel = function(session,input){
+                          observe_event_cancel = function(session,input,not.c,not.msg){
                               shiny::observeEvent(input[[private$cancelid]],{
-                              shiny::showNotification("Aborting Process...",
+
+                              if(isTRUE(not.c)){
+                                notid = private$notid
+                                shiny::showNotification(not.msg,
                                                type = "warning",
-                                               id = "openProjectAbortNotif",
+                                               id = notid,
                                                duration = NULL,
                                                closeButton = FALSE)
-
+                              }
                               private$async$interrupt()
 
                             },domain = session)
@@ -208,19 +214,20 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                             checkmate::expect_numeric(interval,lower = 0,upper = Inf)
                             checkmate::expect_numeric(max.rep,lower = 1,upper = Inf)
 
-                            vars.id = do.call(paste0, Map(stringi::stri_rand_strings, n=4, length=c(5, 4, 1),
+                            vars.id = do.call(paste0, Map(stringi::stri_rand_strings, n=5, length=c(5, 4, 2),
                                                           pattern = c('[A-Z]', '[0-9]', '[A-Z]')))
                             private$input = vars.id[1]
                             private$funid = vars.id[2]
                             private$cancelid = vars.id[3]
                             private$counterid = vars.id[4]
+                            private$notid = vars.id[5]
                             private$id = id
                             private$max.rep = max.rep
                             private$interval = interval
                             private$async = async
 
-                            vars.status = as.numeric(async$.__enclos_env__$private$get_status())
-                            last.val  = vars.status[1]
+
+                            last.val  = as.numeric(async$.__enclos_env__$private$get_status()[1])
                             private$msg = msg
                             private$last.val = ifelse(is.numeric(last.val),last.val,async$lower)
 
@@ -241,14 +248,22 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                           #' associated with the process tracked by the async class
                           #' @param session shiny session
                           #' @param input shiny input
-                          cancel = function(session,input){
+                          #' @param not.msg Content of notification message
+                          cancel = function(session,input,not.msg){
+
+                            not.c = FALSE
+
+                            if(!missing(not.msg)){
+                              not.c = checkmate::check_character(not.msg,max.len = 1)
+                            }
 
                             if(missing(session)){
                               session = shiny::getDefaultReactiveDomain()
                             }
 
                             private$create_cancel()
-                            private$observe_event_cancel(session,input)
+                            private$observe_event_cancel(session,input,not.c = not.c,
+                                                         not.msg = not.msg)
 
 
                           },
