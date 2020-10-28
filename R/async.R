@@ -158,9 +158,9 @@ async = R6::R6Class(classname = 'async',
                       #' @param reactive If its true generate a reactive expression
                       #' is a expression whose result will change over time.
                       #' @param msg A single-element character vector;
-                      #' the initial message to be displayed to the user.
+                      #' the initial message to be pass between processes.
                       #' @param detail A single-element character vector;
-                      #' the initial detail message to be displayed to the user.
+                      #' the initial detail message to be pass between processes.
                       initialize = function(lower, upper,
                                             auto.finish = TRUE,
                                             reactive=TRUE,
@@ -212,11 +212,11 @@ async = R6::R6Class(classname = 'async',
                       },
 
                       #' @description
-                      #' Interrupt checking to future processes.
+                      #' Interrupt the process tracked by the async function.
                       #' @param msg A single-element character vector;
-                      #' the interrupt message to be displayed to the user.
+                      #' the interrupt message to be pass between processes.
                       #' @param detail A single-element character vector;
-                      #' the interrupt detail message to be displayed to the user.
+                      #' the interrupt detail message to be pass between processes.
                       interrupt = function(msg="process interrupted",detail =''){
 
                         args = list(value = 7777, msg = msg, detail ='')
@@ -227,13 +227,13 @@ async = R6::R6Class(classname = 'async',
                         }
                       },
                       #' @description
-                      #' Set progress the tracking progress.
+                      #' Set progress of the tracked routine.
                       #' @param value  the value at which to set the progress,
                       #' relative to lower and upper.
                       #' @param msg A single-element character vector;
-                      #' the message to be displayed to the user.
+                      #' the message to be pass between processes.
                       #' @param detail A single-element character vector;
-                      #' the detail message to be displayed to the user.
+                      #' the detail message to be pass between processes.
                       set = function(value=0,msg="Running...",detail=''){
                         args = list(value = value, msg = msg,detail = detail)
                         checkmate::expect_numeric(value,lower = private$vars$lower,
@@ -250,13 +250,13 @@ async = R6::R6Class(classname = 'async',
                       },
 
                       #' @description
-                      #' Increment the tracking progress.
+                      #' Increment the progress of the tracked routine.
                       #' @param value  the value at which to set the progress,
                       #' relative to lower and upper.
                       #' @param msg A single-element character vector;
-                      #' the message to be displayed to the user.
+                      #' the message to be pass between processes.
                       #' @param detail A single-element character vector;
-                      #' the detail message to be displayed to the user.
+                      #' the detail message to be pass between processes.
                       inc = function(value=0,msg="Running...",detail=''){
                         checkmate::expect_numeric(value,lower = private$vars$lower,
                                                   upper = private$vars$upper)
@@ -279,8 +279,8 @@ async = R6::R6Class(classname = 'async',
 
 
                       #' @description
-                      #' get the status process out
-                      #' of the future context
+                      #' get the status of progress
+                      #' out of the context being tracked.
                       status = function(){
 
                         if(isTRUE(private$.reactive)){
@@ -292,7 +292,7 @@ async = R6::R6Class(classname = 'async',
                       },
                       #' @description
                       #' Check the status process in
-                      #' the future context
+                      #' the tracked context
                       check = function(){
                         do.call(private$check_status,args = list())
                       },
