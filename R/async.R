@@ -40,7 +40,7 @@ async = R6::R6Class(classname = 'async',
                                   upper = 100,
                                   lower = 0,
                                   auto.finish = TRUE,
-                                  vm = c('value'= 0, 'message' = '')
+                                  vm = NULL
                       ),
                       rx_trigger =  reactiveTrigger(),
                       .reactive =TRUE,
@@ -50,18 +50,18 @@ async = R6::R6Class(classname = 'async',
                                   what = "character",
                                   sep="\n",quiet = TRUE)
                         vm = stringr::str_split(vm,' zzzz ')[[1]]
-                        names(vm) = c('value','message')
+                        names(vm) = c('value','message','detail')
                         private$vars$vm = vm
                         return(vm)
                       },
 
-                      set_status = function(value, msg = ""){
+                      set_status = function(value, msg = "",detail=''){
 
-                        vm = paste0(value,' zzzz ',msg)
+                        vm = paste0(value,' zzzz ',msg ,' zzzz ',detail)
                         write(vm, private$vars$status_file)
 
                         vm.out = stringr::str_split(vm,' zzzz ')[[1]]
-                        names(vm.out) = c('value','message')
+                        names(vm.out) = c('value','message','detail')
                         private$vars$vm = vm.out
 
                       },
@@ -159,7 +159,9 @@ async = R6::R6Class(classname = 'async',
                       #' is a expression whose result will change over time.
                       initialize = function(lower, upper,
                                             auto.finish = TRUE,
-                                            reactive=TRUE){
+                                            reactive=TRUE,
+                                            msg,
+                                            detail){
 
                         if(missing(lower)){
                           lower = 0
@@ -169,9 +171,19 @@ async = R6::R6Class(classname = 'async',
                           upper = 100
                         }
 
+                        if(missing(msg)){
+                          msg = ''
+                        }
+
+                        if(missing(detail)){
+                          detail = ''
+                        }
+
                         checkmate::expect_numeric(c(lower,upper),lower = 0,upper = 1000)
                         checkmate::expect_logical(auto.finish,max.len = 1)
                         checkmate::expect_logical(reactive,max.len = 1)
+                        checkmate::expect_character(msg,max.len = 1)
+                        checkmate::expect_character(detail,max.len = 1)
 
 
                         status_file = tempfile()
@@ -179,10 +191,11 @@ async = R6::R6Class(classname = 'async',
                         #init.msg = paste0(0,' zzzz ','init file')
                         # write(init.msg, status_file)
 
-                        vm = private$vars$vm
-                        vm['value'] = lower
+                        vm = c(lower,msg,detail)
+                        names(vm) = c('value','message','detail')
+                        private$vars$vm = vm
 
-                        write(paste0(vm['value'],' zzzz ',vm['message']),
+                        write(paste0(vm['value'],' zzzz ',vm['message'],' zzzz ',vm['detail']),
                               private$vars$status_file)
 
                         private$.reactive = reactive
@@ -213,11 +226,12 @@ async = R6::R6Class(classname = 'async',
                       #' relative to lower and upper.
                       #' @param msg A single-element character vector;
                       #' the message to be displayed to the user.
-                      set = function(value=0,msg="Running..."){
-                        args = list(value = value, msg = msg)
+                      set = function(value=0,msg="Running...",detail=''){
+                        args = list(value = value, msg = msg,detail = detail)
                         checkmate::expect_numeric(value,lower = private$vars$lower,
                                                   upper = private$vars$upper)
                         checkmate::expect_character(msg,max.len = 1)
+                        checkmate::expect_character(detail,max.len = 1)
 
                         do.call(private$check_status,args = list())
                         do.call(private$set_status,args = args)
@@ -233,15 +247,16 @@ async = R6::R6Class(classname = 'async',
                       #' relative to lower and upper.
                       #' @param msg A single-element character vector;
                       #' the message to be displayed to the user.
-                      inc = function(value=0,msg="Running..."){
+                      inc = function(value=0,msg="Running...",detail=''){
                         checkmate::expect_numeric(value,lower = private$vars$lower,
                                                   upper = private$vars$upper)
                         checkmate::expect_character(msg,max.len = 1)
+                        checkmate::expect_character(detail,max.len = 1)
 
                         do.call(private$get_status,args = list())
 
                         value = as.numeric(private$vars$vm[1]) + value
-                        args = list(value = value, msg = msg)
+                        args = list(value = value, msg = msg,detail = detail)
 
                         do.call(private$check_status,args = list())
                         do.call(private$set_status,args = args)

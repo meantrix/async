@@ -6,8 +6,11 @@
 [![version](https://img.shields.io/badge/version-0.0.3-green.svg)](https://semver.org)
 
 
-async is a `tool` for passing messages between some R processes like shiny reactives and futures routines.
-The great advantage of using this package is the fact that there is no copies creation of the shiny session in multiple workers to tracking asynchronous or parallel jobs.
+async is a `tool` for passing messages between some R processes 
+like shiny reactives and futures routines.
+The great advantage of using this package is the fact that there is 
+no copies creation of the shiny session in multiple workers to 
+tracking asynchronous or parallel jobs.
 
 
 ## Prerequisites
