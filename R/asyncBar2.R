@@ -10,8 +10,9 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                           input = NULL,
                           id = NULL,
                           message = NULL,
-                          fun.id = NULL,
+                          funid = NULL,
                           cancelid = NULL,
+                          counterid = NULL,
                           interval = NULL,
                           last.val = NULL,
                           max.rep = NULL,
@@ -88,8 +89,8 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                             )
                           },
                           interrupt_client = function(){
-                            fun.id = private$fun.id
-                            jsCode = paste0("clearInterval(window.",fun.id,");")
+                            funid = private$funid
+                            jsCode = paste0("clearInterval(window.",funid,");")
                             shinyjs::runjs(jsCode)
                             shinyjs::runjs(private$progress_close(private$id))
                             #unlink(private$async$status_file)
@@ -99,10 +100,10 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                             detail = as.character(vars[3])
                             msg = as.character(vars[2])
                             val = as.numeric(vars[1])
-                            fun.id = private$fun.id
+                            funid = private$funid
                             input = private$input
                             timer = private$interval
-                            jsCode = paste0(fun.id," = setInterval(function(){",
+                            jsCode = paste0(funid," = setInterval(function(){",
                                             "Shiny.onInputChange('",input,"','_' + Math.random().toString(36).substr(2, 9));",
                                             "},",timer,");")
                             shinyjs::runjs(jsCode)
@@ -143,12 +144,37 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                             },domain = session)
                           },
 
-                          cancel_process = function(){
+                          create_cancel = function(){
+
+                            id = private$id
+                            cancelid = private$cancelid
+                            counterid = private$counterid
 
 
+                            shinyjs::runjs(progress_cancel(id = id,cancelid = cancelid))
+
+                            jsCode = paste0(
+                            "var ",counterid," = 0;",
+                            "$('#",cancelid,"').on('click', function(){",
+                              counterid,"++;",
+                           "Shiny.onInputChange('",cancelid,"',",counterid,");",
+                          "});")
+
+                            shinyjs::runjs(jsCode)
 
 
+                          },
+                          observe_event_cancel = function(session,input){
+                              shiny::observeEvent(input[[private$cancelid]],{
+                              shiny::showNotification("Aborting Process...",
+                                               type = "warning",
+                                               id = "openProjectAbortNotif",
+                                               duration = NULL,
+                                               closeButton = FALSE)
 
+                              private$async$interrupt()
+
+                            },domain = session)
                           }
 
                         ),
@@ -171,11 +197,12 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                             checkmate::expect_character(detail,max.len = 1)
                             checkmate::expect_numeric(interval,lower = 0,upper = Inf)
                             checkmate::expect_numeric(max.rep,lower = 1,upper = Inf)
-                            vars.id = do.call(paste0, Map(stringi::stri_rand_strings, n=3, length=c(5, 4, 1),
+                            vars.id = do.call(paste0, Map(stringi::stri_rand_strings, n=4, length=c(5, 4, 1),
                                                           pattern = c('[A-Z]', '[0-9]', '[A-Z]')))
                             private$input = vars.id[1]
-                            private$fun.id = vars.id[2]
+                            private$funid = vars.id[2]
                             private$cancelid = vars.id[3]
+                            private$counterid = vars.id[4]
                             private$id = id
                             private$max.rep = max.rep
                             private$interval = interval
@@ -196,6 +223,22 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                             }
                             private$observe_event(session,input)
                           },
+                          #' @description
+                          #' display  a cancel button to end user
+                          #' associated with the process tracked by the async class
+                          #' @param session shiny session
+                          #' @param input shiny input
+                          cancel = function(session,input){
+
+                            if(missing(session)){
+                              session = shiny::getDefaultReactiveDomain()
+                            }
+
+                            private$create_cancel()
+                            private$observe_event_cancel(session,input)
+
+
+                          }
                           #' @description
                           #' Close all routines of async bar.
                           finalize = function(){

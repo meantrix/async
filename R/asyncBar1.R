@@ -9,7 +9,7 @@ asyncBar1 = R6::R6Class(classname = 'asyncBar1',
                           async = NULL,
                           input = NULL,
                           id = NULL,
-                          fun.id = NULL,
+                          funid = NULL,
                           interval = NULL,
                           last.val = NULL,
                           max.rep = NULL,
@@ -76,8 +76,8 @@ asyncBar1 = R6::R6Class(classname = 'asyncBar1',
                             return(paste0("$('#shiny-notification-" , id , "').remove(); "))
                           },
                           interrupt_client = function(){
-                            fun.id = private$fun.id
-                            jsCode = paste0("clearInterval(window.",fun.id,");")
+                            funid = private$funid
+                            jsCode = paste0("clearInterval(window.",funid,");")
                             shinyjs::runjs(jsCode)
                             shinyjs::runjs(private$progress_close(private$id))
                             #unlink(private$async$status_file)
@@ -88,10 +88,10 @@ asyncBar1 = R6::R6Class(classname = 'asyncBar1',
                             detail = as.character(vars[3])
                             msg = as.character(vars[2])
                             val = as.numeric(vars[1])
-                            fun.id = private$fun.id
+                            funid = private$funid
                             input = private$input
                             timer = private$interval
-                            jsCode = paste0(fun.id," = setInterval(function(){",
+                            jsCode = paste0(funid," = setInterval(function(){",
                                             "Shiny.onInputChange('",input,"','_' + Math.random().toString(36).substr(2, 9));",
                                             "},",timer,");")
                             shinyjs::runjs(jsCode)
@@ -154,7 +154,7 @@ asyncBar1 = R6::R6Class(classname = 'asyncBar1',
                             vars.id = do.call(paste0, Map(stringi::stri_rand_strings, n=2, length=c(5, 4, 1),
                                                           pattern = c('[A-Z]', '[0-9]', '[A-Z]')))
                             private$input = vars.id[1]
-                            private$fun.id = vars.id[2]
+                            private$funid = vars.id[2]
                             private$id = id
                             private$max.rep = max.rep
                             private$interval = interval
