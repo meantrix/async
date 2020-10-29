@@ -50,10 +50,14 @@ async = R6::R6Class(classname = 'async',
                                   what = "character",
                                   sep="\n",quiet = TRUE)
                         print(vm)
-                        vm = stringr::str_split(vm,' zzzz ')[[1]]
-                        names(vm) = c('value','message','detail')
-                        private$vars$vm = vm
-                        return(vm)
+                        vm = try(stringr::str_split(vm,' zzzz ')[[1]])
+
+                        if(!inherits(vm,'try-error')){
+                          names(vm) = c('value','message','detail')
+                          private$vars$vm = vm
+                          return(vm)
+                        }
+
                       },
 
                       set_status = function(value, msg = "",detail=""){
@@ -64,6 +68,7 @@ async = R6::R6Class(classname = 'async',
                         vm.out = stringr::str_split(vm,' zzzz ')[[1]]
                         names(vm.out) = c('value','message','detail')
                         private$vars$vm = vm.out
+
 
                       },
 
