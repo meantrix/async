@@ -57,7 +57,7 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                               paste0(
                                 "((id , width) => { $('#shiny-notification-' + id).",
                                 "find('.progress.progress-striped.active').",
-                                "find('.progress-bar').attr('style','width:' + width) })('" , id , "' , '", (100 * width) %>% round(.,digits = 0) %>% as.character(.) %>% paste0(.,"%") , "');"
+                                "find('.progress-bar').attr('style','width:' + width) })('" , id , "' , '", (100 * width) %>% round(.,digits = 2) %>% as.character(.) %>% paste0(.,"%") , "');"
                               )
                             )
                           },
@@ -66,7 +66,7 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                               paste0("((id, detail , width) => {",
                                      "$('#shiny-notification-' + id).find('.progress-detail').html(detail);",
                                      "$('#shiny-notification-' + id).find('.progress.progress-striped.active').find('.progress-bar').attr('style','width:' + width);",
-                                     "})('" , id , "' , '" , detail , "' , '" , (100 * width) %>% round(.,digits = 1) %>% as.character(.) %>% paste0(.,"%") ,"'); "
+                                     "})('" , id , "' , '" , detail , "' , '" , (100 * width) %>% round(.,digits = 2) %>% as.character(.) %>% paste0(.,"%") ,"'); "
                               )
                             )
                           },
