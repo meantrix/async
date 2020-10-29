@@ -49,6 +49,7 @@ async = R6::R6Class(classname = 'async',
                         vm = scan(private$vars$status_file,
                                   what = "character",
                                   sep="\n",quiet = TRUE)
+                        print(vm)
                         vm = stringr::str_split(vm,' zzzz ')[[1]]
                         names(vm) = c('value','message','detail')
                         private$vars$vm = vm
