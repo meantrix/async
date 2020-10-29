@@ -3,7 +3,7 @@
 #'to be able to explicitly trigger a reactive expression.
 #'You can think of it as being similar to an action button,
 #'except instead of clicking on a button to trigger an expression,
-#'you can programatically cause the trigger.
+#'you can programatically cause the trigger.private$interrupted
 #'This concept and code was created by Joe Cheng (author of shiny).
 
 reactiveTrigger = function() {
@@ -73,7 +73,7 @@ async = R6::R6Class(classname = 'async',
                       },
 
                       interrupted = function(){
-                        private$get_status()[1] == "7777"
+                        isTRUE(private$get_status()[1] == "7777")
                       },
 
 
@@ -85,7 +85,7 @@ async = R6::R6Class(classname = 'async',
 
                         }
 
-                        if(private$get_status()[1] == as.character(private$vars$upper)
+                        if( isTRUE(private$get_status()[1] == as.character(private$vars$upper))
                            && private$vars$auto.finish) {
                           #unlink(private$vars$status_file)
                           stop("Process finished")
