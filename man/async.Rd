@@ -32,7 +32,8 @@ is a expression whose result will change over time.}
 \itemize{
 \item \href{#method-new}{\code{async$new()}}
 \item \href{#method-interrupt}{\code{async$interrupt()}}
-\item \href{#method-progress}{\code{async$progress()}}
+\item \href{#method-set}{\code{async$set()}}
+\item \href{#method-inc}{\code{async$inc()}}
 \item \href{#method-status}{\code{async$status()}}
 \item \href{#method-check}{\code{async$check()}}
 \item \href{#method-finalize}{\code{async$finalize()}}
@@ -47,7 +48,7 @@ create an interactive environment
 to pass progress message between
 R processes.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{async$new(lower = 0, upper = 100, auto.finish = TRUE, reactive = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{async$new(lower, upper, auto.finish = TRUE, reactive = TRUE, msg, detail)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -64,6 +65,12 @@ be interrupted when the progress is equal to the upper value.}
 
 \item{\code{reactive}}{If its true generate a reactive expression
 is a expression whose result will change over time.}
+
+\item{\code{msg}}{A single-element character vector;
+the initial message to be pass between processes.}
+
+\item{\code{detail}}{A single-element character vector;
+the initial detail message to be pass between processes.}
 }
 \if{html}{\out{</div>}}
 }
@@ -72,27 +79,30 @@ is a expression whose result will change over time.}
 \if{html}{\out{<a id="method-interrupt"></a>}}
 \if{latex}{\out{\hypertarget{method-interrupt}{}}}
 \subsection{Method \code{interrupt()}}{
-Interrupt checking to future processes.
+Interrupt the process tracked by the async function.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{async$interrupt(msg = "process interrupted")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{async$interrupt(msg = "process interrupted", detail = "")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{msg}}{A single-element character vector;
-the message to be displayed to the user.}
+the interrupt message to be pass between processes.}
+
+\item{\code{detail}}{A single-element character vector;
+the interrupt detail message to be pass between processes.}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-progress"></a>}}
-\if{latex}{\out{\hypertarget{method-progress}{}}}
-\subsection{Method \code{progress()}}{
-Set progress to future processes.
+\if{html}{\out{<a id="method-set"></a>}}
+\if{latex}{\out{\hypertarget{method-set}{}}}
+\subsection{Method \code{set()}}{
+Set progress of the tracked routine.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{async$progress(value = 0, msg = "Running...")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{async$set(value = 0, msg = "Running...", detail = "")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -102,7 +112,34 @@ Set progress to future processes.
 relative to lower and upper.}
 
 \item{\code{msg}}{A single-element character vector;
-the message to be displayed to the user.}
+the message to be pass between processes.}
+
+\item{\code{detail}}{A single-element character vector;
+the detail message to be pass between processes.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-inc"></a>}}
+\if{latex}{\out{\hypertarget{method-inc}{}}}
+\subsection{Method \code{inc()}}{
+Increment the progress of the tracked routine.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{async$inc(value = 0, msg = "Running...", detail = "")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{value}}{the value at which to set the progress,
+relative to lower and upper.}
+
+\item{\code{msg}}{A single-element character vector;
+the message to be pass between processes.}
+
+\item{\code{detail}}{A single-element character vector;
+the detail message to be pass between processes.}
 }
 \if{html}{\out{</div>}}
 }
@@ -111,8 +148,8 @@ the message to be displayed to the user.}
 \if{html}{\out{<a id="method-status"></a>}}
 \if{latex}{\out{\hypertarget{method-status}{}}}
 \subsection{Method \code{status()}}{
-get the status of the process out
-of the future context
+get the status of progress
+out of the context being tracked.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{async$status()}\if{html}{\out{</div>}}
 }
@@ -122,8 +159,8 @@ of the future context
 \if{html}{\out{<a id="method-check"></a>}}
 \if{latex}{\out{\hypertarget{method-check}{}}}
 \subsection{Method \code{check()}}{
-Check the status of the process in
-the future context
+Check the status process in
+the tracked context
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{async$check()}\if{html}{\out{</div>}}
 }
@@ -138,13 +175,6 @@ Close all routines of async tracking.
 \if{html}{\out{<div class="r">}}\preformatted{async$finalize()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{session}}{shiny session}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

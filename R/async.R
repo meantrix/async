@@ -49,20 +49,26 @@ async = R6::R6Class(classname = 'async',
                         vm = scan(private$vars$status_file,
                                   what = "character",
                                   sep="\n",quiet = TRUE)
-                        vm = stringr::str_split(vm,' zzzz ')[[1]]
-                        names(vm) = c('value','message')
-                        private$vars$vm = vm
-                        vm
+                        print(vm)
+                        vm = try(stringr::str_split(vm,' zzzz ')[[1]])
+
+                        if(!inherits(vm,'try-error')){
+                          names(vm) = c('value','message','detail')
+                          private$vars$vm = vm
+                          return(vm)
+                        }
+
                       },
 
-                      set_status = function(value, msg = ""){
+                      set_status = function(value, msg = "",detail=""){
 
-                        vm = paste0(value,' zzzz ',msg)
+                        vm = paste0(value,' zzzz ',msg ,' zzzz ',detail)
                         write(vm, private$vars$status_file)
 
                         vm.out = stringr::str_split(vm,' zzzz ')[[1]]
-                        names(vm.out) = c('value','message')
+                        names(vm.out) = c('value','message','detail')
                         private$vars$vm = vm.out
+
 
                       },
 
@@ -157,20 +163,50 @@ async = R6::R6Class(classname = 'async',
                       #'be interrupted when the progress is equal to the upper value.
                       #' @param reactive If its true generate a reactive expression
                       #' is a expression whose result will change over time.
-                      initialize = function(lower=0, upper=100,
+                      #' @param msg A single-element character vector;
+                      #' the initial message to be pass between processes.
+                      #' @param detail A single-element character vector;
+                      #' the initial detail message to be pass between processes.
+                      initialize = function(lower, upper,
                                             auto.finish = TRUE,
-                                            reactive=TRUE){
+                                            reactive=TRUE,
+                                            msg,
+                                            detail){
 
-                        checkmate::expect_numeric(c(lower,upper),lower = 0,upper = 100)
+                        if(missing(lower)){
+                          lower = 0
+                        }
+
+                        if(missing(upper)) {
+                          upper = 100
+                        }
+
+                        if(missing(msg)){
+                          msg = ""
+                        }
+
+                        if(missing(detail)){
+                          detail = ""
+                        }
+
+                        checkmate::expect_numeric(c(lower,upper),lower = 0,upper = 1000)
                         checkmate::expect_logical(auto.finish,max.len = 1)
                         checkmate::expect_logical(reactive,max.len = 1)
+                        checkmate::expect_character(msg,max.len = 1)
+                        checkmate::expect_character(detail,max.len = 1)
+
 
                         status_file = tempfile()
                         private$vars$status_file = status_file
                         #init.msg = paste0(0,' zzzz ','init file')
                         # write(init.msg, status_file)
-                        vm = private$vars$vm
-                        write(paste0(vm$value,' zzzz ',vm$msg), private$vars$status_file)
+
+                        vm = c(lower,msg,detail)
+                        names(vm) = c('value','message','detail')
+                        private$vars$vm = vm
+
+                        write(paste0(vm['value'],' zzzz ',vm['message'],' zzzz ',vm['detail']),
+                              private$vars$status_file)
 
                         private$.reactive = reactive
                         private$rx_trigger =  reactiveTrigger()
@@ -182,12 +218,14 @@ async = R6::R6Class(classname = 'async',
                       },
 
                       #' @description
-                      #' Interrupt checking to future processes.
+                      #' Interrupt the process tracked by the async function.
                       #' @param msg A single-element character vector;
-                      #' the message to be displayed to the user.
-                      interrupt = function(msg="process interrupted"){
+                      #' the interrupt message to be pass between processes.
+                      #' @param detail A single-element character vector;
+                      #' the interrupt detail message to be pass between processes.
+                      interrupt = function(msg="process interrupted", detail =""){
 
-                        args = list(value = 7777, msg = msg)
+                        args = list(value = 7777, msg = msg, detail ='')
                         do.call(private$set_status, args = args)
 
                         if(isTRUE(private$.reactive)){
@@ -195,16 +233,19 @@ async = R6::R6Class(classname = 'async',
                         }
                       },
                       #' @description
-                      #' Set progress to future processes.
+                      #' Set progress of the tracked routine.
                       #' @param value  the value at which to set the progress,
                       #' relative to lower and upper.
                       #' @param msg A single-element character vector;
-                      #' the message to be displayed to the user.
-                      progress = function(value=0,msg="Running..."){
-                        args = list(value = value, msg = msg)
+                      #' the message to be pass between processes.
+                      #' @param detail A single-element character vector;
+                      #' the detail message to be pass between processes.
+                      set = function(value=0, msg="Running...", detail=""){
+                        args = list(value = value, msg = msg,detail = detail)
                         checkmate::expect_numeric(value,lower = private$vars$lower,
                                                   upper = private$vars$upper)
                         checkmate::expect_character(msg,max.len = 1)
+                        checkmate::expect_character(detail,max.len = 1)
 
                         do.call(private$check_status,args = list())
                         do.call(private$set_status,args = args)
@@ -213,9 +254,39 @@ async = R6::R6Class(classname = 'async',
                           private$rx_trigger$trigger()
                         }
                       },
+
                       #' @description
-                      #' get the status of the process out
-                      #' of the future context
+                      #' Increment the progress of the tracked routine.
+                      #' @param value  the value at which to set the progress,
+                      #' relative to lower and upper.
+                      #' @param msg A single-element character vector;
+                      #' the message to be pass between processes.
+                      #' @param detail A single-element character vector;
+                      #' the detail message to be pass between processes.
+                      inc = function(value=0, msg="Running...", detail=""){
+                        checkmate::expect_numeric(value,lower = private$vars$lower,
+                                                  upper = private$vars$upper)
+                        checkmate::expect_character(msg,max.len = 1)
+                        checkmate::expect_character(detail,max.len = 1)
+
+                        do.call(private$get_status,args = list())
+
+                        value = as.numeric(private$vars$vm[1]) + value
+                        args = list(value = value, msg = msg,detail = detail)
+
+                        do.call(private$check_status,args = list())
+                        do.call(private$set_status,args = args)
+
+                        if(isTRUE(private$.reactive)){
+                          private$rx_trigger$trigger()
+                        }
+                      },
+
+
+
+                      #' @description
+                      #' get the status of progress
+                      #' out of the context being tracked.
                       status = function(){
 
                         if(isTRUE(private$.reactive)){
@@ -226,8 +297,8 @@ async = R6::R6Class(classname = 'async',
                         return(private$vars$vm)
                       },
                       #' @description
-                      #' Check the status of the process in
-                      #' the future context
+                      #' Check the status process in
+                      #' the tracked context
                       check = function(){
                         do.call(private$check_status,args = list())
                       },
