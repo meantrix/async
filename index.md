@@ -1,37 +1,119 @@
-## Welcome to GitHub Pages
+# Async
 
-You can use the [editor on GitHub](https://github.com/meantrix/async/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+![logo](https://github.com/meantrix/async/blob/develop/inst/header_transparente_colorido.png)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+<!--- These are examples. See https://shields.io for others or to customize this set of shields. You might want to include dependencies, project status and licence info here --->
+[![version](https://img.shields.io/badge/version-0.0.3-green.svg)](https://semver.org)
 
-### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+async is a `tool` for passing messages between some R processes 
+like shiny reactives and futures routines.
+The great advantage of using this package is the fact that there is 
+no copies creation of the shiny session in multiple workers to 
+tracking asynchronous or parallel jobs.
 
-```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
+## Prerequisites
 
-- Bulleted
-- List
+Before you begin, ensure you have met the following requirements:
+* We recommend that you have `R >= 3.5.0`
+* You have a `Windows/Linux/Mac` machine.
 
-1. Numbered
-2. List
+## Installing async
 
-**Bold** and _Italic_ and `Code` text
+To install `async`, follow these steps:
 
-[Link](url) and ![Image](src)
+
+``` r
+library(devtools)
+install_github("meantrix/async")
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Using async example
 
-### Jekyll Themes
+Communicate between the app and the inside of the future:
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/meantrix/async/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+```
+library(shiny)
+library(async)
+library(future)
+plan(multiprocess)
 
-### Support or Contact
+ui = fluidPage(
+  titlePanel("Long Run Stoppable Async"),
+  sidebarLayout(
+    sidebarPanel(
+      actionButton('cancel', 'Cancel'),
+      actionButton('status', 'Check Status')
+    ),
+    mainPanel(
+      tableOutput("result")
+    )
+  )
+)
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+server = function(input, output) {
+  N = 100
+  asy = async$new(reactive = TRUE,auto.finish = FALSE)
+
+
+    result = future({
+      print("Running...")
+      for(i in 1:N){
+
+        # Long Running Task
+        Sys.sleep(1)
+
+        # Notify status file of progress
+        asy$progress(100*i/N)
+
+      }
+
+      #Some results
+      quantile(rnorm(1000))
+    })
+
+
+  # Register user interrupt
+  observeEvent(input$cancel,{
+    print("Cancel")
+    asy$interrupt()
+  })
+
+  # Let user get analysis progress
+  observeEvent(input$status,{
+    print("Status")
+    print(asy$status())
+  })
+}
+
+# Run the application
+shinyApp(ui = ui, server = server)
+```
+
+
+## Contributing to async
+
+To contribute to `async`, follow these steps:
+
+1. Fork this repository.
+2. Create a branch: `git checkout -b <branch_name>`.
+3. Make your changes and commit them: `git commit -m '<commit_message>'`
+4. Push to the original branch: `git push origin async/<location>`
+5. Create the pull request.
+
+Alternatively see the GitHub documentation on [creating a pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
+
+## Contributors
+
+Thanks to the following people who have contributed to this project:
+
+* [@meantrix](https://github.com/meantrix) 📖
+
+## Contact
+
+If you want to contact me you can reach me at <contato@meantrix.com>.
+
+## License
+
+This project uses the following license: [MIT Licence](<https://github.com/meantrix/async/blob/master/LICENSE>).
