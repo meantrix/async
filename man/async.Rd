@@ -48,7 +48,15 @@ create an interactive environment
 to pass progress message between
 R processes.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{async$new(lower, upper, auto.finish = TRUE, reactive = TRUE, msg, detail)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{async$new(
+  lower,
+  upper,
+  auto.finish = TRUE,
+  reactive = TRUE,
+  verbose = FALSE,
+  msg,
+  detail
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -65,6 +73,9 @@ be interrupted when the progress is equal to the upper value.}
 
 \item{\code{reactive}}{If its true generate a reactive expression
 is a expression whose result will change over time.}
+
+\item{\code{verbose}}{logical.If its TRUE  provides much more
+information about the flow of information between the R processes.}
 
 \item{\code{msg}}{A single-element character vector;
 the initial message to be pass between processes.}

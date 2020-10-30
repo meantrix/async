@@ -3,7 +3,7 @@
 #'to be able to explicitly trigger a reactive expression.
 #'You can think of it as being similar to an action button,
 #'except instead of clicking on a button to trigger an expression,
-#'you can programatically cause the trigger.private$interrupted
+#'you can programatically cause the trigger.
 #'This concept and code was created by Joe Cheng (author of shiny).
 
 reactiveTrigger = function() {
@@ -37,6 +37,7 @@ async = R6::R6Class(classname = 'async',
                     private = list(
 
                       vars = list(status_file = NULL,
+                                  verbose = FALSE,
                                   upper = 100,
                                   lower = 0,
                                   auto.finish = TRUE,
@@ -49,7 +50,11 @@ async = R6::R6Class(classname = 'async',
                         vm = scan(private$vars$status_file,
                                   what = "character",
                                   sep="\n",quiet = TRUE)
-                        print(vm)
+
+                        if(private$vars$verbose){
+                          message(paste0("get status: ",vm))
+                        }
+
                         vm = try(stringr::str_split(vm,' zzzz ')[[1]])
 
                         if(!inherits(vm,'try-error')){
@@ -65,8 +70,15 @@ async = R6::R6Class(classname = 'async',
                         vm = paste0(value,' zzzz ',msg ,' zzzz ',detail)
                         write(vm, private$vars$status_file)
 
+                        if(private$vars$verbose){
+                          message(paste0("set status: ",vm))
+                        }
+
                         vm.out = stringr::str_split(vm,' zzzz ')[[1]]
                         names(vm.out) = c('value','message','detail')
+
+
+
                         private$vars$vm = vm.out
 
 
@@ -163,6 +175,8 @@ async = R6::R6Class(classname = 'async',
                       #'be interrupted when the progress is equal to the upper value.
                       #' @param reactive If its true generate a reactive expression
                       #' is a expression whose result will change over time.
+                      #' @param verbose logical.If its TRUE  provides much more
+                      #' information about the flow of information between the R processes.
                       #' @param msg A single-element character vector;
                       #' the initial message to be pass between processes.
                       #' @param detail A single-element character vector;
@@ -170,6 +184,7 @@ async = R6::R6Class(classname = 'async',
                       initialize = function(lower, upper,
                                             auto.finish = TRUE,
                                             reactive=TRUE,
+                                            verbose = FALSE,
                                             msg,
                                             detail){
 
@@ -192,6 +207,7 @@ async = R6::R6Class(classname = 'async',
                         checkmate::expect_numeric(c(lower,upper),lower = 0,upper = 1000)
                         checkmate::expect_logical(auto.finish,max.len = 1)
                         checkmate::expect_logical(reactive,max.len = 1)
+                        checkmate::expect_logical(verbose,max.len = 1)
                         checkmate::expect_character(msg,max.len = 1)
                         checkmate::expect_character(detail,max.len = 1)
 
@@ -211,6 +227,7 @@ async = R6::R6Class(classname = 'async',
                         private$.reactive = reactive
                         private$rx_trigger =  reactiveTrigger()
 
+                        private$vars$verbose = verbose
                         private$vars$lower = lower
                         private$vars$upper = upper
                         private$vars$auto.finish = auto.finish
@@ -225,7 +242,10 @@ async = R6::R6Class(classname = 'async',
                       #' the interrupt detail message to be pass between processes.
                       interrupt = function(msg="process interrupted", detail =""){
 
-                        args = list(value = 7777, msg = msg, detail ='')
+                        checkmate::expect_character(msg,max.len = 1)
+                        checkmate::expect_character(detail,max.len = 1)
+
+                        args = list(value = 7777, msg = msg, detail =detail)
                         do.call(private$set_status, args = args)
 
                         if(isTRUE(private$.reactive)){
