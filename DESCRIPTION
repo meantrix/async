@@ -1,7 +1,7 @@
 Package: async
 Type: Package
 Title: Async
-Version: 0.0.3
+Version: 0.0.4
 Authors@R: 
     c(person(
       given = "Igor",
