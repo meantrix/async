@@ -18,7 +18,7 @@ server <- function(input, output,session) {
   N <- 100
   reactlog_enable()
   asy1 = async$new(reactive=TRUE,auto.finish=FALSE,lower = 0, upper = 100)
-  asy2 = async$new(reactive = TRUE,auto.finish = FALSE)
+  asy2 = async$new(reactive = TRUE,auto.finish = FALSE,verbose = T)
 
 
 

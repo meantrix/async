@@ -1,5 +1,15 @@
 #CHANGELOG
 
+## Async 0.0.4
+
+- `async[R6]` : New param verbose to provides much more 
+information about the flow of information between the R processes. 
+
+### Bug Fixes :
+
+- Error: `"observer error: Error in if (private$interrupted()) {: argument is of length zero\n"`
+in async class fixed.
+
 ## Async 0.0.3
 
 New routines to save and load async objects as `rds` files ;
@@ -21,7 +31,7 @@ New progress bar with cancel button;
 - The package documentation has been rewritten.
 
 ### Bugs
-- `asyn: get_status` method  character(0) error fixed;
+- `async: get_status` method  character(0) error fixed;
 
 
 
