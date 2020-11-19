@@ -1,4 +1,8 @@
-#CHANGELOG
+# CHANGELOG
+
+## Async 0.0.5
+
+- Fix `asyncBar2` behaviour where abortion notification was dismissed before the abortion was concluded. The `removeNotification` is now called on `finalize` method.
 
 ## Async 0.0.4
 
