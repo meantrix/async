@@ -135,8 +135,7 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                               if( isTRUE(val == 7777) |
                                   isTRUE(val == max.val) |
                                   isTRUE(private$n.rep > private$max.rep) ) {
-
-                                shiny::removeNotification(private$notid)
+                                #shiny::removeNotification(private$notid)
                                 private$interrupt_client()
 
                               } else {
@@ -174,10 +173,10 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                               if(isTRUE(not.c)){
                                 notid = private$notid
                                 shiny::showNotification(not.msg,
-                                               type = "warning",
-                                               id = notid,
-                                               duration = NULL,
-                                               closeButton = FALSE)
+                                                        type = "warning",
+                                                        id = notid,
+                                                        duration = NULL,
+                                                        closeButton = FALSE)
                               }
                               private$async$interrupt()
 
@@ -271,6 +270,7 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                           #' Close all routines of async bar.
                           finalize = function(){
                             private$interrupt_client()
+                            shiny::removeNotification(private$notid)
                           }
                         )
 )
