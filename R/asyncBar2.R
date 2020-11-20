@@ -271,6 +271,7 @@ asyncBar2 = R6::R6Class(classname = 'asyncBar2',
                           finalize = function(){
                             private$interrupt_client()
                             shiny::removeNotification(private$notid)
+                            private$async$finalize()
                           }
                         )
 )
