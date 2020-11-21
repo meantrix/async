@@ -2,13 +2,13 @@
 
 ## Async 0.0.5
 
-- Fix `asyncBar2` behaviour where abortion notification was dismissed before the abortion was concluded. The `removeNotification` is now called on `finalize` method.
+- Fix `asyncBar2` behaviour where abortion notification was dismissed before the abortion was concluded. The `removeNotification` is now called on `finalize` method;
+- Inserts  async finalize method in asyncBar1 and asyncBar2 finalize routine ; 
 
 ## Async 0.0.4
 
 - `async[R6]` : New param verbose to provides much more 
-information about the flow of information between the R processes. 
-
+information about the flow of information between the R processes.
 ### Bug Fixes :
 
 - Error: `"observer error: Error in if (private$interrupted()) {: argument is of length zero\n"`

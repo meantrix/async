@@ -32,7 +32,7 @@ server <- function(input, output, session) {
     print("Running...")
     for (i in 1:N) {
       # Long Running Task
-      Sys.sleep(8)
+      Sys.sleep(1)
       # Notify status file of progress
       asy1$set(100 * i / N, detail = paste0("...", as.character(100 * i /
                                                                   N), "..."))

@@ -180,6 +180,7 @@ asyncBar1 = R6::R6Class(classname = 'asyncBar1',
                           #' Close all routines of async bar.
                           finalize = function(){
                             private$interrupt_client()
+                            private$async$finalize()
                           }
                         )
 )
