@@ -11,7 +11,7 @@ ui <- tagList(shinyjs::useShinyjs(),
 
 server <- function(input, output, session) {
 
-  N <- 5
+  N <- 100
   asy1 = async$new(
     reactive = TRUE,
     auto.finish = FALSE,
