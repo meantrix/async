@@ -3,7 +3,7 @@
 ![logo](https://github.com/meantrix/async/blob/develop/inst/header_transparente_colorido.png)
 
 <!--- These are examples. See https://shields.io for others or to customize this set of shields. You might want to include dependencies, project status and licence info here --->
-[![version](https://img.shields.io/badge/version-0.0.5-green.svg)](https://semver.org)
+[![version](https://img.shields.io/badge/version-0.0.6-green.svg)](https://semver.org)
 
 
 async is a `tool` for passing messages between some R processes 

@@ -30,19 +30,19 @@ is a expression whose result will change over time.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{async$new()}}
-\item \href{#method-interrupt}{\code{async$interrupt()}}
-\item \href{#method-set}{\code{async$set()}}
-\item \href{#method-inc}{\code{async$inc()}}
-\item \href{#method-status}{\code{async$status()}}
-\item \href{#method-check}{\code{async$check()}}
-\item \href{#method-finalize}{\code{async$finalize()}}
-\item \href{#method-clone}{\code{async$clone()}}
+\item \href{#method-async-new}{\code{async$new()}}
+\item \href{#method-async-interrupt}{\code{async$interrupt()}}
+\item \href{#method-async-set}{\code{async$set()}}
+\item \href{#method-async-inc}{\code{async$inc()}}
+\item \href{#method-async-status}{\code{async$status()}}
+\item \href{#method-async-check}{\code{async$check()}}
+\item \href{#method-async-finalize}{\code{async$finalize()}}
+\item \href{#method-async-clone}{\code{async$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-async-new"></a>}}
+\if{latex}{\out{\hypertarget{method-async-new}{}}}
 \subsection{Method \code{new()}}{
 create an interactive environment
 to pass progress message between
@@ -87,8 +87,8 @@ the initial detail message to be pass between processes.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-interrupt"></a>}}
-\if{latex}{\out{\hypertarget{method-interrupt}{}}}
+\if{html}{\out{<a id="method-async-interrupt"></a>}}
+\if{latex}{\out{\hypertarget{method-async-interrupt}{}}}
 \subsection{Method \code{interrupt()}}{
 Interrupt the process tracked by the async function.
 \subsection{Usage}{
@@ -108,8 +108,8 @@ the interrupt detail message to be pass between processes.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set"></a>}}
-\if{latex}{\out{\hypertarget{method-set}{}}}
+\if{html}{\out{<a id="method-async-set"></a>}}
+\if{latex}{\out{\hypertarget{method-async-set}{}}}
 \subsection{Method \code{set()}}{
 Set progress of the tracked routine.
 \subsection{Usage}{
@@ -132,8 +132,8 @@ the detail message to be pass between processes.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-inc"></a>}}
-\if{latex}{\out{\hypertarget{method-inc}{}}}
+\if{html}{\out{<a id="method-async-inc"></a>}}
+\if{latex}{\out{\hypertarget{method-async-inc}{}}}
 \subsection{Method \code{inc()}}{
 Increment the progress of the tracked routine.
 \subsection{Usage}{
@@ -156,8 +156,8 @@ the detail message to be pass between processes.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-status"></a>}}
-\if{latex}{\out{\hypertarget{method-status}{}}}
+\if{html}{\out{<a id="method-async-status"></a>}}
+\if{latex}{\out{\hypertarget{method-async-status}{}}}
 \subsection{Method \code{status()}}{
 get the status of progress
 out of the context being tracked.
@@ -167,8 +167,8 @@ out of the context being tracked.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-check"></a>}}
-\if{latex}{\out{\hypertarget{method-check}{}}}
+\if{html}{\out{<a id="method-async-check"></a>}}
+\if{latex}{\out{\hypertarget{method-async-check}{}}}
 \subsection{Method \code{check()}}{
 Check the status process in
 the tracked context
@@ -178,8 +178,8 @@ the tracked context
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-finalize"></a>}}
-\if{latex}{\out{\hypertarget{method-finalize}{}}}
+\if{html}{\out{<a id="method-async-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-async-finalize}{}}}
 \subsection{Method \code{finalize()}}{
 Close all routines of async tracking.
 \subsection{Usage}{
@@ -188,8 +188,8 @@ Close all routines of async tracking.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-async-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-async-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

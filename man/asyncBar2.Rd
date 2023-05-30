@@ -9,16 +9,16 @@ Reports  async class progress with a custom shiny bar to end user.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{asyncBar2$new()}}
-\item \href{#method-progress}{\code{asyncBar2$progress()}}
-\item \href{#method-cancel}{\code{asyncBar2$cancel()}}
-\item \href{#method-finalize}{\code{asyncBar2$finalize()}}
-\item \href{#method-clone}{\code{asyncBar2$clone()}}
+\item \href{#method-asyncBar2-new}{\code{asyncBar2$new()}}
+\item \href{#method-asyncBar2-progress}{\code{asyncBar2$progress()}}
+\item \href{#method-asyncBar2-cancel}{\code{asyncBar2$cancel()}}
+\item \href{#method-asyncBar2-finalize}{\code{asyncBar2$finalize()}}
+\item \href{#method-asyncBar2-clone}{\code{asyncBar2$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-asyncBar2-new"></a>}}
+\if{latex}{\out{\hypertarget{method-asyncBar2-new}{}}}
 \subsection{Method \code{new()}}{
 Interactive environment
 to create a progress  bar of async tracking.
@@ -46,8 +46,8 @@ the message to be displayed to the user,}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-progress"></a>}}
-\if{latex}{\out{\hypertarget{method-progress}{}}}
+\if{html}{\out{<a id="method-asyncBar2-progress"></a>}}
+\if{latex}{\out{\hypertarget{method-asyncBar2-progress}{}}}
 \subsection{Method \code{progress()}}{
 observe event to checks of the async job progress.
 \subsection{Usage}{
@@ -65,8 +65,8 @@ observe event to checks of the async job progress.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-cancel"></a>}}
-\if{latex}{\out{\hypertarget{method-cancel}{}}}
+\if{html}{\out{<a id="method-asyncBar2-cancel"></a>}}
+\if{latex}{\out{\hypertarget{method-asyncBar2-cancel}{}}}
 \subsection{Method \code{cancel()}}{
 display  a cancel button to end user
 associated with the process tracked by the async class
@@ -87,8 +87,8 @@ associated with the process tracked by the async class
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-finalize"></a>}}
-\if{latex}{\out{\hypertarget{method-finalize}{}}}
+\if{html}{\out{<a id="method-asyncBar2-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-asyncBar2-finalize}{}}}
 \subsection{Method \code{finalize()}}{
 Close all routines of async bar.
 \subsection{Usage}{
@@ -97,8 +97,8 @@ Close all routines of async bar.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-asyncBar2-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-asyncBar2-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
