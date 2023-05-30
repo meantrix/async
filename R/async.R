@@ -47,15 +47,18 @@ async = R6::R6Class(classname = 'async',
                       .reactive =TRUE,
 
                       get_status = function(){
-                        vm = scan(private$vars$status_file,
+                        . = NULL
+                        vm = try(
+                                (scan(private$vars$status_file,
                                   what = "character",
-                                  sep="\n",quiet = TRUE)
+                                  sep="\n",quiet = TRUE) %>%
+                                  stringr::str_split(.,' zzzz '))[[1]] ,
+                                  silent = TRUE
+                             )
 
-                        if(private$vars$verbose){
+                        if(!inherits(vm,'try-error') && private$vars$verbose){
                           message(paste0("get status: ",vm))
                         }
-
-                        vm = try(stringr::str_split(vm,' zzzz ')[[1]])
 
                         if(!inherits(vm,'try-error')){
                           names(vm) = c('value','message','detail')
@@ -63,6 +66,10 @@ async = R6::R6Class(classname = 'async',
                           return(vm)
                         }
 
+                        if(private$vars$verbose){
+                          message("Async: cant open tempfile: ", private$vars$status_file)
+                        }
+                        NULL
                       },
 
                       set_status = function(value, msg = "",detail=""){
@@ -76,8 +83,6 @@ async = R6::R6Class(classname = 'async',
 
                         vm.out = stringr::str_split(vm,' zzzz ')[[1]]
                         names(vm.out) = c('value','message','detail')
-
-
 
                         private$vars$vm = vm.out
 
