@@ -56,11 +56,8 @@ async = R6::R6Class(classname = 'async',
                                   silent = TRUE
                              )
 
-                        if(!inherits(vm,'try-error') && private$vars$verbose){
-                          message(paste0("get status: ",vm))
-                        }
-
                         if(!inherits(vm,'try-error')){
+                          if(private$vars$verbose) message(paste0("get status: ",vm))
                           names(vm) = c('value','message','detail')
                           private$vars$vm = vm
                           return(vm)
@@ -70,6 +67,7 @@ async = R6::R6Class(classname = 'async',
                           message("Async: cant open tempfile: ", private$vars$status_file)
                         }
                         NULL
+
                       },
 
                       set_status = function(value, msg = "",detail=""){
