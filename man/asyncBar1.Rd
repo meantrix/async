@@ -9,15 +9,15 @@ Reports  async class progress with a default shiny bar to end user.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{asyncBar1$new()}}
-\item \href{#method-progress}{\code{asyncBar1$progress()}}
-\item \href{#method-finalize}{\code{asyncBar1$finalize()}}
-\item \href{#method-clone}{\code{asyncBar1$clone()}}
+\item \href{#method-asyncBar1-new}{\code{asyncBar1$new()}}
+\item \href{#method-asyncBar1-progress}{\code{asyncBar1$progress()}}
+\item \href{#method-asyncBar1-finalize}{\code{asyncBar1$finalize()}}
+\item \href{#method-asyncBar1-clone}{\code{asyncBar1$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-asyncBar1-new"></a>}}
+\if{latex}{\out{\hypertarget{method-asyncBar1-new}{}}}
 \subsection{Method \code{new()}}{
 Interactive environment
 to create a progress  bar of async tracking.
@@ -42,8 +42,8 @@ a progress value can be repeated.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-progress"></a>}}
-\if{latex}{\out{\hypertarget{method-progress}{}}}
+\if{html}{\out{<a id="method-asyncBar1-progress"></a>}}
+\if{latex}{\out{\hypertarget{method-asyncBar1-progress}{}}}
 \subsection{Method \code{progress()}}{
 observe event to checks of the async job progress.
 \subsection{Usage}{
@@ -61,8 +61,8 @@ observe event to checks of the async job progress.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-finalize"></a>}}
-\if{latex}{\out{\hypertarget{method-finalize}{}}}
+\if{html}{\out{<a id="method-asyncBar1-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-asyncBar1-finalize}{}}}
 \subsection{Method \code{finalize()}}{
 Close all routines of async bar.
 \subsection{Usage}{
@@ -71,8 +71,8 @@ Close all routines of async bar.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-asyncBar1-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-asyncBar1-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
